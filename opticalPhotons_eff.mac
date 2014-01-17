@@ -1,0 +1,22 @@
+# Macro file for the 
+# initialization of G4GeneralParticleSource
+
+/gps/particle opticalphoton
+
+/gps/pos/type Volume
+/gps/pos/shape Para
+/gps/pos/centre  57.24 57.24 0 mm
+/gps/pos/halfx 12 mm
+/gps/pos/halfy 12 mm
+/gps/pos/halfz 110 mm
+
+/gps/ang/type iso
+/gps/polarization 1 0 0
+
+/gps/ene/type Gauss
+/gps/ene/mono	2.95 eV		# 420 nm
+/gps/ene/sigma 0.12 eV		# 18 nm
+
+
+#/tracking/verbose 1
+/run/beamOn 10000
