@@ -25,18 +25,13 @@ CreateTree::CreateTree(TString name, bool energy_fiber, bool init_data, bool pos
   
   this->GetTree()->Branch("Event",&this->Event,"Event/I");
   
-//   this->GetTree()->Branch("Total_delta_5x5",        &this->Total_delta_5x5,        "Total_delta_5x5/F");
-  this->GetTree()->Branch("Total_energy_5x5",       &this->Total_energy_5x5,       "Total_energy_5x5/F");
-  this->GetTree()->Branch("Total_ion_energy_5x5",   &this->Total_ion_energy_5x5,   "Total_ion_energy_5x5/F");
-  this->GetTree()->Branch("Total_nonion_energy_5x5",&this->Total_nonion_energy_5x5,"Total_nonion_energy_5x5/F");
-  
   this->GetTree()->Branch("Tot_phot_cer",		   &this->Tot_phot_cer,			 "Tot_phot_cer/F");
   this->GetTree()->Branch("Tot_phot_scint",		   &this->Tot_phot_scint,			 "Tot_phot_scint/F");
   
 //   this->GetTree()->Branch("Total_delta_world",        &this->Total_delta_world,        "Total_delta_world/F");
-  this->GetTree()->Branch("Total_energy_world",       &this->Total_energy_world,       "Total_energy_world/F");
-  this->GetTree()->Branch("Total_ion_energy_world",   &this->Total_ion_energy_world,   "Total_ion_energy_world/F");
-  this->GetTree()->Branch("Total_nonion_energy_world",&this->Total_nonion_energy_world,"Total_nonion_energy_world/F");
+//   this->GetTree()->Branch("Total_energy_world",       &this->Total_energy_world,       "Total_energy_world/F");
+//   this->GetTree()->Branch("Total_ion_energy_world",   &this->Total_ion_energy_world,   "Total_ion_energy_world/F");
+//   this->GetTree()->Branch("Total_nonion_energy_world",&this->Total_nonion_energy_world,"Total_nonion_energy_world/F");
   
 //   this->GetTree()->Branch("Total_em_energy",&this->Total_em_energy,"Total_em_energy/F");
   
@@ -55,8 +50,9 @@ CreateTree::CreateTree(TString name, bool energy_fiber, bool init_data, bool pos
     
   if( this -> ENERGY_FIBER)
   {
-    this->GetTree()->Branch("Total_energy",&this->Total_energy,"Total_energy[25]/F");
-    this->GetTree()->Branch("Total_nonion_energy",&this->Total_nonion_energy,"Total_nonion_energy[25]/F");	  
+    this->GetTree()->Branch("Total_energy",&this->Total_energy,"Total_energy/F");
+    this->GetTree()->Branch("Total_ion_energy",&this->Total_ion_energy,"Total_ion_energy/F");	  
+    this->GetTree()->Branch("Total_ion_energy_att",&this->Total_ion_energy_att,"Total_ion_energy_att[10]/F");	  
   }
   
   if( this -> POS_FIBER)
@@ -65,12 +61,15 @@ CreateTree::CreateTree(TString name, bool energy_fiber, bool init_data, bool pos
     this->GetTree()->Branch("depositionY",&depositionY);
     this->GetTree()->Branch("depositionZ",&depositionZ);  
     this->GetTree()->Branch("Energy_deposited",&Energy_deposited);
+    this->GetTree()->Branch("Time_deposit",&Time_deposit);
   }
   
   if( this -> OPPHOTONS)
   {
-    this->GetTree()->Branch("opPhoton_n",&this->opPhoton_n,"opPhoton_n[25]/I");
-    this->GetTree()->Branch("opPhoton_n_ext",&this->opPhoton_n_ext,"opPhoton_n_ext[25]/I");
+    this->GetTree()->Branch("opPhoton_n",&this->opPhoton_n,"opPhoton_n/I");
+    this->GetTree()->Branch("opPhoton_n_ext",&this->opPhoton_n_ext,"opPhoton_n_ext/I");
+    this->GetTree()->Branch("opPhoton_n_det",&this->opPhoton_n_det,"opPhoton_n_det/I");
+    
 //     this->GetTree()->Branch("opPhoton_process",&opPhoton_process);
 //     this->GetTree()->Branch("opPhoton_trackID",&opPhoton_trackID);
 //     this->GetTree()->Branch("opPhoton_parentTrackID",&opPhoton_parentTrackID);
@@ -85,13 +84,7 @@ CreateTree::CreateTree(TString name, bool energy_fiber, bool init_data, bool pos
 //     this->GetTree()->Branch("opPhoton_pX",&opPhoton_pX);
 //     this->GetTree()->Branch("opPhoton_pY",&opPhoton_pY);
 //     this->GetTree()->Branch("opPhoton_pZ",&opPhoton_pZ);
-
-    this->GetTree()->Branch("opPhoton_n_det",&this->opPhoton_n_det,"opPhoton_n_det[25]/I");
-    
-    this->GetTree()->Branch("opPhoton_n_det_central",&this->opPhoton_n_det_central,"opPhoton_n_det_central/I");
-    this->GetTree()->Branch("opPhoton_n_det_3x3",&this->opPhoton_n_det_3x3,"opPhoton_n_det_3x3/I");
-    this->GetTree()->Branch("opPhoton_n_det_5x5",&this->opPhoton_n_det_5x5,"opPhoton_n_det_5x5/I");
-    
+       
     this->GetTree()->Branch("opPhoton_process_det",&opPhoton_process_det);
     this->GetTree()->Branch("opPhoton_waveLength_det",&opPhoton_waveLength_det);
     this->GetTree()->Branch("opPhoton_time_det",&opPhoton_time_det);
@@ -125,11 +118,6 @@ void CreateTree::Clear()
 {
   Event	= 0;
   
-  Total_delta_5x5         = 0;
-  Total_energy_5x5        = 0;
-  Total_ion_energy_5x5    = 0;
-  Total_nonion_energy_5x5 = 0;
-
   Tot_phot_cer = 0;
   Tot_phot_scint = 0;
   
@@ -153,11 +141,11 @@ void CreateTree::Clear()
   
   if( this->ENERGY_FIBER )
   {
-    for (int iCrystal = 0; iCrystal < 25; iCrystal++)
-    {
-        Total_energy[iCrystal] = 0;
-        Total_nonion_energy[iCrystal] = 0;	  		    	  
-    }
+    
+        Total_energy= 0;
+        Total_ion_energy = 0;	  		    	  
+	for (int j = 0; j< 10; j++) Total_ion_energy_att[j] = 0;
+    
   }
   
   if( this->POS_FIBER )
@@ -166,6 +154,7 @@ void CreateTree::Clear()
     depositionY.clear();		
     depositionZ.clear();
     Energy_deposited.clear();
+    Time_deposit.clear();
   }
   
   if( this->OPPHOTONS )
@@ -186,16 +175,13 @@ void CreateTree::Clear()
 //     opPhoton_pY.clear();
 //     opPhoton_pZ.clear();
 
-    for (int i = 0; i < 25; i++) {
-      opPhoton_n[i] = 0;
-      opPhoton_n_ext[i] = 0;
-      opPhoton_n_det[i] = 0;
+//     for (int i = 0; i < 25; i++) {
+      opPhoton_n = 0;
+      opPhoton_n_ext = 0;
+      opPhoton_n_det = 0;
       
-    }
+//     }
     
-    opPhoton_n_det_central = 0;
-    opPhoton_n_det_3x3 = 0;
-    opPhoton_n_det_5x5 = 0;
     
     opPhoton_process_det.clear();
 

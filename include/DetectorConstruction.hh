@@ -142,6 +142,8 @@ private:
     int surfinish;
     G4double Ephoton[3];
     
+    G4double mu_ind;
+    
   void initializeSurface(G4OpticalSurface *mySurface, string surfaceType);
   void initializeReflectivitySurface(G4OpticalSurface *mySurface, string surfaceType);
   

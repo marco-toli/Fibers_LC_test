@@ -53,15 +53,12 @@ public:
   float InitalMomentumDirectionY;
   float InitalMomentumDirectionZ;
   
-  std::vector<float> Energy_deposited;
+  
   std::vector<float> depositionX;
   std::vector<float> depositionY;
   std::vector<float> depositionZ;
-  
-  float Total_delta_5x5;
-  float Total_energy_5x5;
-  float Total_ion_energy_5x5;
-  float Total_nonion_energy_5x5;
+  std::vector<float> Energy_deposited;
+  std::vector<float> Time_deposit;
 
   float Tot_phot_cer;
   float Tot_phot_scint;
@@ -72,8 +69,9 @@ public:
   float Total_nonion_energy_world;
   
   
-  float Total_energy[25];
-  float Total_nonion_energy[25];
+  float Total_energy;
+  float Total_ion_energy;
+  float Total_ion_energy_att[10];
   
   
   std::vector<int> opPhoton_process;
@@ -91,8 +89,9 @@ public:
   std::vector<float> opPhoton_pY;
   std::vector<float> opPhoton_pZ;
 
-  int opPhoton_n[25];
-  int opPhoton_n_det[25];
+  int opPhoton_n;
+  int opPhoton_n_ext;
+  int opPhoton_n_det;
 
   int opPhoton_n_det_central;
   int opPhoton_n_det_3x3;
@@ -104,6 +103,7 @@ public:
   std::vector<int> opPhoton_fiberIX_det;
   std::vector<int> opPhoton_fiberIZ_det;
   std::vector<float> opPhoton_energy_det;
+  
   std::vector<float> opPhoton_waveLength_det;
   std::vector<float> opPhoton_time_det;
   std::vector<float> opPhoton_trackLength_det;

@@ -1,5 +1,7 @@
 #include "MyMaterials.hh"
 #include "G4NistManager.hh"
+#include "TF1.h"
+#include "TH1F.h"
 
 
 
@@ -927,7 +929,7 @@ G4Material* MyMaterials::LSO()
 
 
 
-G4Material* MyMaterials::PWO()
+G4Material* MyMaterials::PWO(double mu_ind)
 {
   G4double a, z, density;
   G4Element* Pb = new G4Element("Lead",     "Pb", z = 82., a = 207.21*g/mole);
@@ -1078,7 +1080,34 @@ G4Material* MyMaterials::PWO()
       898.8 * mm, 856.9 * mm, 821.7 * mm, 794.2 * mm, 767.7 * mm, 746.5 * mm, 725.6 * mm, 710.7 * mm, 695.3 * mm, 686.2 * mm,
       674.8 * mm, 663.5 * mm, 648.3 * mm, 633.4 * mm, 622.3 * mm, 607.8 * mm, 590.9 * mm, 568.9 * mm, 541.4 * mm, 502.9 * mm,
       467 * mm, 430.2 * mm, 390.1 * mm, 345.3 * mm, 298.9 * mm, 256.7 * mm, 219.8 * mm, 185.4 * mm, 150.9 * mm, 116.4 * mm,
-      84.8 * mm, 59.4 * mm, 41.1 * mm, 27.5 * mm, 24.2 * mm, 24.2 * mm, 24.3 * mm, 24.3 * mm, 24.4 * mm, 24.6 * mm };
+      84.8 * mm, 59.4 * mm, 41.1 * mm, 0 * mm, 0 * mm, 0 * mm, 0 * mm, 0 * mm, 0 * mm, 0 * mm };
+      
+      
+//       double AttenuationCoeff = 0.1;
+//       double AttenuationCoeff = 0.1 ... f(mu_ind);
+
+      TF1 * fLambdaMu = new TF1 ("fLambdaMu", "[0]/x/x/x/x + [1]*exp(-pow(x-[2],2)/2/[3]/[3] )");
+      fLambdaMu->SetParameter(0, 3.11093e+10);
+      fLambdaMu->SetParameter(1, 4.33418);
+      fLambdaMu->SetParameter(2, 362.606);
+      fLambdaMu->SetParameter(3, 14.991);
+      
+      
+      TH1F * hAttenuation = new TH1F ("hAttenuation", "hAttenuation", nEntries_ABS, 1239.84/PhotonEnergy_ABS[nEntries_ABS-1], 1239.84/PhotonEnergy_ABS[0]);
+      
+      for (int iAbs = 0; iAbs < nEntries_ABS; iAbs++){
+// 	Absorption[iAbs] = Absorption[iAbs]*10;
+// 	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind/1000*mm);
+
+  	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind*fLambdaMu->Eval(1239.84/PhotonEnergy_ABS[iAbs]*nm)/1000*mm);
+	hAttenuation->Fill (1239.84/PhotonEnergy_ABS[iAbs] , Absorption[iAbs]);
+	cout << " Absorption[" << 1239.84/PhotonEnergy_ABS[iAbs]*nm << "]  = " << Absorption[iAbs] << "correction : " << mu_ind*fLambdaMu->Eval(1239.84/PhotonEnergy_ABS[iAbs]*nm)/1000*mm << endl;
+      }
+      
+      hAttenuation->Write();
+      
+      
+      
   
   const G4int nEntries_SCY = 12;
   G4double ElectronEnergy_SCY[nEntries_SCY] =
@@ -1099,7 +1128,7 @@ G4Material* MyMaterials::PWO()
   myMPT->AddProperty ("RINDEX",        PhotonEnergy_RI,   RefractiveIndex, nEntries_RI);
   myMPT->AddProperty ("ABSLENGTH",     PhotonEnergy_ABS,  Absorption,      nEntries_ABS);
   myMPT->AddProperty ("ELECTRONSCINTILLATIONYIELD", ElectronEnergy_SCY, ScintilYield, nEntries_SCY);
-  myMPT->AddConstProperty ("SCINTILLATIONYIELD", 100/MeV);
+  myMPT->AddConstProperty ("SCINTILLATIONYIELD", 1/MeV);
   myMPT->AddConstProperty ("RESOLUTIONSCALE", 1.0); //3.2 default value
   myMPT->AddConstProperty ("FASTTIMECONSTANT", 20.*ns);
   myMPT->AddConstProperty ("YIELDRATIO", 1.0);

@@ -144,8 +144,9 @@ private:
     
   void initializeSurface(G4OpticalSurface *mySurface, string surfaceType);
   void initializeReflectivitySurface(G4OpticalSurface *mySurface, string surfaceType);
+  
   void applayDivisionByPbWOIndex(int size, G4double* energyVector,G4double* indexVector);
-  void setWrappingIndices(G4MaterialPropertiesTable *myTable,float divisionIndex,string wrappingMaterial);
+//   void setWrappingIndices(G4MaterialPropertiesTable *myTable,float divisionIndex,string wrappingMaterial);
 
   int surConfig;
 

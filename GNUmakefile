@@ -1,4 +1,4 @@
-name := ECAL_Endcap
+name := ECAL_Endcap_tapered
 G4TARGET := $(name)
 G4EXLIB := true
 

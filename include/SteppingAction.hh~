@@ -6,10 +6,11 @@
 
 #include "globals.hh"
 #include "G4UserSteppingAction.hh"
-#include "G4DetectorConstruction.hh"
+#include "DetectorConstruction.hh"
 #include <iostream>
 
 #include "TFile.h"
+#include "TF1.h"
 #include "TTree.h"
 #include "TString.h"
 #include <vector>
@@ -25,6 +26,8 @@ public:
   ~SteppingAction();
   virtual void UserSteppingAction(const G4Step*);
 
+  TF1 * fAtt = new TF1 ("fAtt", " [0]*exp((x-220)/[1]) + [2]", 0, 220);
+  
   //void SetOneStepPrimaries(G4bool b){oneStepPrimaries=b;}
   //G4bool GetOneStepPrimaries(){return oneStepPrimaries;}
   

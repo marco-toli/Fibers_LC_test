@@ -5,9 +5,9 @@
 
 /gps/pos/type Volume
 /gps/pos/shape Para
-/gps/pos/centre  57.24 57.24 0 mm
-/gps/pos/halfx 12 mm
-/gps/pos/halfy 12 mm
+/gps/pos/centre  0 0 0 mm
+/gps/pos/halfx 14 mm
+/gps/pos/halfy 14 mm
 /gps/pos/halfz 110 mm
 
 /gps/ang/type iso

@@ -46,6 +46,8 @@
 #include "G4SubtractionSolid.hh"
 #include "G4Tubs.hh"
 #include "G4VisAttributes.hh"
+#include "math.h"
+#include <cmath>
 
 
 
@@ -109,9 +111,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4LogicalVolume* expHall_log = new G4LogicalVolume(expHall_box, MyMaterials::Air(), "World", 0, 0, 0);
   G4VPhysicalVolume* expHall_phys = new G4PVPlacement(0, G4ThreeVector(), expHall_log, "World", 0, false, 0);
   
-
-
-  double pointingAngle = 0.001976598*M_PI;	//~0.36° -- arctan (29.31/4720)
   double alveola_thickness = 0.2*mm;
   
   // solids
@@ -120,8 +119,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4Trd* EE_solid_big = new G4Trd("EE_solid_big",0.5*(front_face_size + alveola_thickness/2), 0.5*(rear_face_size + alveola_thickness/2), 0.5*(front_face_size + alveola_thickness/2) , 0.5*(rear_face_size+ alveola_thickness/2), 0.5*(crystal_length - 0.1*mm));
   G4SubtractionSolid* EE_solid_alveolar = new G4SubtractionSolid ("EE_solid_alveolar", EE_solid_big, EE_solid);
   
-  G4Tubs* Grease_solid = new G4Tubs("Grease_solid", 0, win_r, win_l/2, startAngle, spanningAngle);
-  G4Tubs* Win_solid = new G4Tubs("Win_solid", 0, win_r, win_l/2, startAngle, spanningAngle);
+  G4Tubs* Grease_solid = new G4Tubs("Grease_solid", 0, win_r, 0.5*win_l, startAngle, spanningAngle);
+  G4Tubs* Win_solid = new G4Tubs("Win_solid", 0, win_r, 0.5*win_l, startAngle, spanningAngle);
  
   G4Tubs* Det_layer_solid = new G4Tubs("Det_layer_solid", 0, win_r, depth*0.5, startAngle, spanningAngle);
   G4Tubs* Det_solid = new G4Tubs("Det_solid", 0, win_r, det_d*0.5, startAngle, spanningAngle);
@@ -139,67 +138,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   
   // physical: placement
-  G4VPhysicalVolume* EE_phys[25];
-  G4VPhysicalVolume* EE_phys_alveolar[25];
+       
+      G4VPhysicalVolume* EE_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), EE_log, "EE_phys", expHall_log, false, 0);
+      G4VPhysicalVolume* EE_alveolar_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), EE_log_alveolar, "EE_alveolar_phys", expHall_log, false, 0);
 
-  G4VPhysicalVolume* Grease_rear_phys[25];
-  G4VPhysicalVolume* Win_rear_phys[25];
-  
-  G4VPhysicalVolume* Det_layer_rear_phys[25];
-  G4VPhysicalVolume* Det_rear_phys[25];
-  
-  char name[60];
+      G4VPhysicalVolume* Grease_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (crystal_length + win_l)/2) , Grease_log, "Grease_phys", expHall_log, false, 0);
+      G4VPhysicalVolume* Win_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (crystal_length + win_l)/2 + win_l), Win_log, "Win_phys", expHall_log, false, 0);
 
-  
-  
-  G4double x_pos[25];
-  G4double y_pos[25];
-  
-  G4double x_pos_pmt[25];
-  G4double y_pos_pmt[25];
-  
-  
-
-  for (int iX = 0; iX < 5; iX ++){
-    for (int iY = 0; iY < 5; iY ++){
-      
-      iCrystal = 5*iX + iY;
-      x_pos[iCrystal] = iX*(rear_face_size+front_face_size + 2*alveola_thickness)/2.;	// position the baricenter of crystals and then rotating them by
-      y_pos[iCrystal] = iY*(rear_face_size+front_face_size + 2*alveola_thickness)/2.;
-      
-      x_pos_pmt[iCrystal] = iX*(rear_face_size*2 + 2*alveola_thickness)/2.;	// position the baricenter of crystals and then rotating them by
-      y_pos_pmt[iCrystal] = iY*(rear_face_size*2 + 2*alveola_thickness)/2.;
-
-      G4RotationMatrix* piRot = new G4RotationMatrix;
-      piRot->rotateY(-pointingAngle*rad*(iX + 0.5));
-      piRot->rotateX(pointingAngle*rad*(iY + 0.5));
-
-      cout << " x_pos [" <<iCrystal << "] = " << x_pos[iCrystal] << " :: y_pos[" << iCrystal << "] = " << y_pos[iCrystal] << " :: angle = [" << pointingAngle*iX << ", " << pointingAngle*iY << "] " << endl;
-      
-//       if (iX == 0)
-  
-      sprintf(name, "EE_phys_%d", iCrystal);
-      EE_phys[iCrystal] = new G4PVPlacement(piRot, G4ThreeVector(x_pos[iCrystal], y_pos[iCrystal], 0), EE_log, name, expHall_log, false, 0);
-      
-      sprintf(name, "EE_phys_alveolar_%d", iCrystal);
-      EE_phys_alveolar[iCrystal] = new G4PVPlacement(piRot, G4ThreeVector(x_pos[iCrystal], y_pos[iCrystal], 0), EE_log_alveolar, name, expHall_log, false, 0);
-
-      sprintf(name,"Grease_rear_%d",iCrystal);
-      Grease_rear_phys[iCrystal] = new G4PVPlacement(piRot, G4ThreeVector(x_pos_pmt[iCrystal], y_pos_pmt[iCrystal], (crystal_length + win_l)/2), Grease_log, name, expHall_log, false, 0);
-      
-      sprintf(name,"Win_rear_%d",iCrystal);
-      Win_rear_phys[iCrystal] = new G4PVPlacement(piRot, G4ThreeVector(x_pos_pmt[iCrystal], y_pos_pmt[iCrystal], (crystal_length + win_l)/2 + win_l), Win_log, name, expHall_log, false, 0);
-
-      sprintf(name,"Det_layer_rear_%d", iCrystal);
-      Det_layer_rear_phys[iCrystal] = new G4PVPlacement(piRot, G4ThreeVector(x_pos_pmt[iCrystal], y_pos_pmt[iCrystal], (crystal_length + depth)/2 + 2*win_l) , Det_layer_log, name, expHall_log, false, 0);
-
-      sprintf(name,"Det_rear_%d", iCrystal);
-      Det_rear_phys[iCrystal] = new G4PVPlacement(piRot, G4ThreeVector(x_pos_pmt[iCrystal], y_pos_pmt[iCrystal], (crystal_length  + det_d)/2 + 2*win_l + depth) , Det_log, name, expHall_log, false, 0);
-    }
-  }
-  
-
-
+      G4VPhysicalVolume* Det_layer_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (crystal_length + depth)/2 + 2*win_l) , Det_layer_log, "Det_layer_phys", expHall_log, false, 0);
+      G4VPhysicalVolume* Det_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (crystal_length  + det_d)/2 + 2*win_l + depth) , Det_log, "Det_phys", expHall_log, false, 0);
+    
 
     //
     // S U R F A C E S   C O N F I G U R A T I O N
@@ -209,7 +157,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     
     if (surConfig == 0) {
         //Nothing - Crystal completely polished
-
     }
 
     else if (surConfig == 1) {
@@ -222,14 +169,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         initializeReflectivitySurface(OpCrystalSurface, "crystal");
 
         //----INTERNAL WRAPPING----//
-	for (int iX = 0; iX < 5; iX ++){
-	  for (int iY = 0; iY < 5; iY ++){
-	    iCrystal = 5*iX + iY;
 	    	    
-	    CrystalSurfaceSkin   = new G4LogicalBorderSurface("Lateral", EE_phys[iCrystal], EE_phys_alveolar[iCrystal], OpCrystalSurface);
-	  }
-	}
-
+	    CrystalSurfaceSkin   = new G4LogicalBorderSurface("Lateral", EE_phys, EE_alveolar_phys, OpCrystalSurface);
     }
   
   
@@ -359,7 +300,7 @@ void DetectorConstruction::initializeMaterials()
   else if( crystal_material == 2 ) ScMaterial = MyMaterials::LYSO();
   else if( crystal_material == 3 ) ScMaterial = MyMaterials::LuAG_Ce();  
   else if( crystal_material == 4 ) ScMaterial = MyMaterials::LuAG_Pr();
-  else if( crystal_material == 5 ) ScMaterial = MyMaterials::PWO();
+  else if( crystal_material == 5 ) ScMaterial = MyMaterials::PWO(mu_ind);
   else if( crystal_material == 6 ) ScMaterial = MyMaterials::Air();
   else if( crystal_material == 7 ) ScMaterial = MyMaterials::Quartz();
   else if( crystal_material == 8 ) ScMaterial = MyMaterials::DSBCe();
@@ -557,7 +498,7 @@ void DetectorConstruction::initializeReflectivitySurface(G4OpticalSurface *surfa
         Refl[0] = 0.0; // suppress photons with energy < 1eV (will not be detected)
         Refl[1] = this->crystal_reflectivity;
         Refl[2] = this->crystal_reflectivity;
-        NumRefl = 10;
+        NumRefl = 100;
 
 
 //     }
