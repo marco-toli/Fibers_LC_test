@@ -169,6 +169,16 @@ G4Material* MyMaterials::Vacuum()
   return mat;
 }
 
+G4Material* MyMaterials::Aluminum () 
+{
+  G4double a, z, density;
+  density = 2.700*g/cm3;
+  a = 26.98*g/mole;
+  
+  G4Material* mat = new G4Material("Aluminum", z=13., a, density);
+  return mat;
+}
+
 
 
 G4Material* MyMaterials::Silicon()
@@ -1073,18 +1083,16 @@ G4Material* MyMaterials::PWO(double mu_ind)
       2.53029 * eV, 2.583 * eV, 2.63796 * eV, 2.69531 * eV, 2.7552 * eV, 2.81782 * eV, 2.88335 * eV, 2.952 * eV, 3.024 * eV, 3.0996 * eV,
       3.17908 * eV, 3.26274 * eV, 3.35092 * eV, 3.44401 * eV, 3.54241 * eV, 3.64659 * eV, 3.7571 * eV, 3.87451 * eV, 3.99949 * eV, 4.13281 * eV };
 
+      double att0 = 20;
       G4double Absorption[nEntries_ABS] =
-    { 3110 * mm, 3110 * mm, 3110 * mm, 3110 * mm, 3110 * mm, 3105 * mm, 3105 * mm, 3105 * mm, 3105 * mm, 3105 * mm,
-      3105 * mm, 2745 * mm, 2460 * mm, 2230 * mm, 2039 * mm, 1877 * mm, 1859 * mm, 1826 * mm, 1764 * mm, 1760 * mm,
-      1664 * mm, 1585 * mm, 1471 * mm, 1376 * mm, 1272 * mm, 1187 * mm, 1114 * mm, 1046 * mm, 993.2 * mm, 942.9 * mm,
-      898.8 * mm, 856.9 * mm, 821.7 * mm, 794.2 * mm, 767.7 * mm, 746.5 * mm, 725.6 * mm, 710.7 * mm, 695.3 * mm, 686.2 * mm,
-      674.8 * mm, 663.5 * mm, 648.3 * mm, 633.4 * mm, 622.3 * mm, 607.8 * mm, 590.9 * mm, 568.9 * mm, 541.4 * mm, 502.9 * mm,
-      467 * mm, 430.2 * mm, 390.1 * mm, 345.3 * mm, 298.9 * mm, 256.7 * mm, 219.8 * mm, 185.4 * mm, 150.9 * mm, 116.4 * mm,
-      84.8 * mm, 59.4 * mm, 41.1 * mm, 0 * mm, 0 * mm, 0 * mm, 0 * mm, 0 * mm, 0 * mm, 0 * mm };
+    { 3110 *att0*mm, 3110 *att0*mm, 3110 *att0*mm, 3110 *att0*mm, 3110 *att0*mm, 3105 *att0*mm, 3105 *att0*mm, 3105 *att0*mm, 3105 *att0*mm, 3105 *att0*mm,
+      3105 *att0*mm, 2745 *att0*mm, 2460 *att0*mm, 2230 *att0*mm, 2039 *att0*mm, 1877 *att0*mm, 1859 *att0*mm, 1826 *att0*mm, 1764 *att0*mm, 1760 *att0*mm,
+      1664 *att0*mm, 1585 *att0*mm, 1471 *att0*mm, 1376 *att0*mm, 1272 *att0*mm, 1187 *att0*mm, 1114 *att0*mm, 1046 *att0*mm, 993.2 *att0*mm, 942.9 *att0*mm,
+      898.8 *att0*mm, 856.9 *att0*mm, 821.7 *att0*mm, 794.2 *att0*mm, 767.7 *att0*mm, 746.5 *att0*mm, 725.6 *att0*mm, 710.7 *att0*mm, 695.3 *att0*mm, 686.2 *att0*mm,
+      674.8 *att0*mm, 663.5 *att0*mm, 648.3 *att0*mm, 633.4 *att0*mm, 622.3 *att0*mm, 607.8 *att0*mm, 590.9 *att0*mm, 568.9 *att0*mm, 541.4 *att0*mm, 502.9 *att0*mm,
+      467 *att0*mm, 430.2 *att0*mm, 390.1 *att0*mm, 345.3 *att0*mm, 298.9 *att0*mm, 256.7 *att0*mm, 219.8 *att0*mm, 185.4 *att0*mm, 150.9 *att0*mm, 116.4 *att0*mm,
+      84.8 *att0*mm, 59.4 *att0*mm, 41.1 *att0*mm, 0 *att0*mm, 0 *att0*mm, 0 *att0*mm, 0 *att0*mm, 0 *att0*mm, 0 *att0*mm, 0 *att0*mm };
       
-      
-//       double AttenuationCoeff = 0.1;
-//       double AttenuationCoeff = 0.1 ... f(mu_ind);
 
       TF1 * fLambdaMu = new TF1 ("fLambdaMu", "[0]/x/x/x/x + [1]*exp(-pow(x-[2],2)/2/[3]/[3] )");
       fLambdaMu->SetParameter(0, 3.11093e+10);
@@ -1120,18 +1128,18 @@ G4Material* MyMaterials::PWO(double mu_ind)
       0.74, 0.80, 0.82, 0.84,
       0.87,  0.96,  0.98,  1.00 };
       
-  for(int i = 0; i < nEntries_SCY; i++)
-    ScintilYield[i] = 0.3 * MeV * ScintilYield[i] * ElectronEnergy_SCY[i];
+  for(int i = 0; i < nEntries_SCY; i++)    ScintilYield[i] = 0.3 * MeV * ScintilYield[i] * ElectronEnergy_SCY[i];
   
   G4MaterialPropertiesTable* myMPT = new G4MaterialPropertiesTable();
   myMPT->AddProperty ("FASTCOMPONENT", PhotonEnergy_FAST, FastComponent,   nEntries_FAST);
   myMPT->AddProperty ("RINDEX",        PhotonEnergy_RI,   RefractiveIndex, nEntries_RI);
   myMPT->AddProperty ("ABSLENGTH",     PhotonEnergy_ABS,  Absorption,      nEntries_ABS);
   myMPT->AddProperty ("ELECTRONSCINTILLATIONYIELD", ElectronEnergy_SCY, ScintilYield, nEntries_SCY);
-  myMPT->AddConstProperty ("SCINTILLATIONYIELD", 1/MeV);
+  myMPT->AddConstProperty ("SCINTILLATIONYIELD", 10/MeV);
   myMPT->AddConstProperty ("RESOLUTIONSCALE", 1.0); //3.2 default value
-  myMPT->AddConstProperty ("FASTTIMECONSTANT", 20.*ns);
-  myMPT->AddConstProperty ("YIELDRATIO", 1.0);
+  myMPT->AddConstProperty ("FASTTIMECONSTANT", 5.*ns);
+  myMPT->AddConstProperty ("SLOWTIMECONSTANT", 15.*ns);
+  myMPT->AddConstProperty ("YIELDRATIO", 0.3);
   myMPT->AddConstProperty ("FASTSCINTILLATIONRISETIME", 0.1 * ns);
   
   mat->SetMaterialPropertiesTable (myMPT);

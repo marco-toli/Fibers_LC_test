@@ -91,6 +91,10 @@ public:
   int opPhoton_n;
   int opPhoton_n_ext;
   int opPhoton_n_det;
+  
+  std::vector<float> opPhoton_n_type;
+  std::vector<float> opPhoton_n_ext_type;
+  std::vector<float> opPhoton_n_det_type;
 
   int opPhoton_n_det_central;
   int opPhoton_n_det_3x3;
