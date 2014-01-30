@@ -65,18 +65,14 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
   if( particleType == G4OpticalPhoton::OpticalPhotonDefinition() )
   {
 //      cout << "optical photon ! " << endl;
-     
     G4String processName = " "; if (theTrack->GetCreatorProcess())  processName = theTrack->GetCreatorProcess()->GetProcessName();
-    if (processName == "Cerenkov") CreateTree::Instance()->Tot_phot_cer += 1;
-    if (processName == "Scintillation") CreateTree::Instance()->Tot_phot_scint += 1;
-
-    
-    if( //(CreateTree::Instance()->Timing() && processName != "Cerenkov") ||
-        (!CreateTree::Instance()->Timing()) || processName != "Scintillation")
-    theTrack->SetTrackStatus(fKillTrackAndSecondaries);
+//     if (processName == "Cerenkov") CreateTree::Instance()->Tot_phot_cer += 1;
+//     if (processName == "Scintillation") CreateTree::Instance()->Tot_phot_scint += 1;
+    if( !CreateTree::Instance()->Timing() || processName == "Cerenkov")
+      theTrack->SetTrackStatus(fKillTrackAndSecondaries);
     
     // do this cycle only IF info on optical photons is needed
-    if (CreateTree::Instance()->OpPhotons())
+    if (CreateTree::Instance()->OpPhotons() && processName != "Cerenkov")
     {
       //---------------------------------------------------------
       // storing time, energy and position of all optical photons
@@ -87,7 +83,7 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
       
       // produced photons
       // 	  if (thePostPVName == name2 ) cout << "pre PV name = " << thePrePVName << " :: the post PV = " << thePostPVName  << endl;
-      if (theTrack->GetVolume()->GetName() == "EE_phys" && (nStep == 1) ) {
+      if (theTrack->GetVolume()->GetName() == "EE_phys" && (nStep == 1)) {// 
 	CreateTree::Instance()->opPhoton_n ++;
 	if (processName == "Cerenkov") CreateTree::Instance()->opPhoton_n_type.push_back(0);
 	if (processName == "Scintillation") CreateTree::Instance()->opPhoton_n_type.push_back(1);
@@ -97,7 +93,7 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
       // extracted photons
       if (thePrePVName == "EE_phys" && thePostPVName == "Grease_phys" ) {
 	CreateTree::Instance()->opPhoton_n_ext ++;
-	if (processName == "Cerenkov") CreateTree::Instance()->opPhoton_n_ext_type.push_back(0);
+	if (processName == "Cherenkov") CreateTree::Instance()->opPhoton_n_ext_type.push_back(0);
 	if (processName == "Scintillation") CreateTree::Instance()->opPhoton_n_ext_type.push_back(1);
       }
       
@@ -106,7 +102,7 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
       if (thePrePVName == "Det_layer_phys" && thePostPVName == "Det_phys") {	// detected at photodetector iCrystal
 
 	CreateTree::Instance()->opPhoton_n_det++;
-	if (processName == "Cerenkov") CreateTree::Instance()->opPhoton_n_det_type.push_back(0);
+	if (processName == "Cherenkov") CreateTree::Instance()->opPhoton_n_det_type.push_back(0);
 	if (processName == "Scintillation") CreateTree::Instance()->opPhoton_n_det_type.push_back(1);
 	CreateTree::Instance()->opPhoton_waveLength_det.push_back(MyMaterials::fromEvToNm(theTrack->GetTotalEnergy()/eV) );
 	CreateTree::Instance()->opPhoton_time_det.push_back( theTrack->GetGlobalTime()/nanosecond );
