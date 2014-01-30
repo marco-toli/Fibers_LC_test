@@ -1135,7 +1135,7 @@ G4Material* MyMaterials::PWO(double mu_ind)
   myMPT->AddProperty ("RINDEX",        PhotonEnergy_RI,   RefractiveIndex, nEntries_RI);
   myMPT->AddProperty ("ABSLENGTH",     PhotonEnergy_ABS,  Absorption,      nEntries_ABS);
 //   myMPT->AddProperty ("ELECTRONSCINTILLATIONYIELD", ElectronEnergy_SCY, ScintilYield, nEntries_SCY);
-  myMPT->AddConstProperty ("SCINTILLATIONYIELD", 20/MeV);
+  myMPT->AddConstProperty ("SCINTILLATIONYIELD", 20/MeV );
   myMPT->AddConstProperty ("RESOLUTIONSCALE", 1.0); //3.2 default value
   myMPT->AddConstProperty ("FASTTIMECONSTANT", 5.*ns);
   myMPT->AddConstProperty ("SLOWTIMECONSTANT", 15.*ns);

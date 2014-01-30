@@ -1109,7 +1109,7 @@ G4Material* MyMaterials::PWO(double mu_ind)
 
   	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind*fLambdaMu->Eval(1239.84/PhotonEnergy_ABS[iAbs]*nm)/1000*mm);
 	hAttenuation->Fill (1239.84/PhotonEnergy_ABS[iAbs] , Absorption[iAbs]);
-	cout << " Absorption[" << 1239.84/PhotonEnergy_ABS[iAbs]*nm << "]  = " << Absorption[iAbs] << "correction : " << mu_ind*fLambdaMu->Eval(1239.84/PhotonEnergy_ABS[iAbs]*nm)/1000*mm << endl;
+// 	cout << " Absorption[" << 1239.84/PhotonEnergy_ABS[iAbs]*nm << "]  = " << Absorption[iAbs] << "correction : " << mu_ind*fLambdaMu->Eval(1239.84/PhotonEnergy_ABS[iAbs]*nm)/1000*mm << endl;
       }
       
       hAttenuation->Write();
