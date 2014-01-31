@@ -70,7 +70,7 @@ public:
   
   float Total_energy;
   float Total_ion_energy;
-  float Total_ion_energy_att[10];
+  float Total_ion_energy_att[11];
   
   
   std::vector<int> opPhoton_process;

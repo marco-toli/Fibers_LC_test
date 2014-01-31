@@ -16,8 +16,12 @@
 #include <vector>
 
 
-//class SteppingMessenger;
 
+  const int nATT = 11;
+  double par0[nATT], par1[nATT], par2[nATT];
+
+  //class SteppingMessenger;
+  
 class SteppingAction : public G4UserSteppingAction
 {
 public:
@@ -25,6 +29,9 @@ public:
   SteppingAction();
   ~SteppingAction();
   virtual void UserSteppingAction(const G4Step*);
+  
+
+  
 
   double fAtt (double par0, double par1, double par2, double z) {
     
@@ -33,6 +40,7 @@ public:
     
   }
   
+     
   //void SetOneStepPrimaries(G4bool b){oneStepPrimaries=b;}
   //G4bool GetOneStepPrimaries(){return oneStepPrimaries;}
   

@@ -138,11 +138,11 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
       CreateTree::Instance()->Total_ion_energy    += ion_energy;
       
      // define parameter for effective attenuation curve along z (crystal length)
-     double par0 = 4.42145e-02, par1 = 3.04950e+01, par2 = 1.60709e-04;
+     
      
 //      cout << " att coeff = " <<  fAtt(par0, par1, par2, pos[2])/par0 << endl;
-     for (int j = 0; j < 10; j++) {
-	 CreateTree::Instance()->Total_ion_energy_att[j]    += ion_energy* fAtt(par0, par1, par2, pos[2] + 110) /par0;
+     for (int iAtt = 0; iAtt < nATT; iAtt++) {
+	 CreateTree::Instance()->Total_ion_energy_att[j]    += ion_energy* fAtt(par0[iAtt], par1[iAtt], par2[iAtt], pos[2] + 110);// if normalization / fAtt(par0[iAtt], par1[iAtt], par2[iAtt], 220);
      }
      
 

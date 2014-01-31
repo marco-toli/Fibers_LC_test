@@ -67,28 +67,13 @@ CreateTree::CreateTree(TString name, bool energy_fiber, bool init_data, bool pos
   if( this -> OPPHOTONS)
   {
     this->GetTree()->Branch("opPhoton_n",&this->opPhoton_n,"opPhoton_n/I");
-    this->GetTree()->Branch("opPhoton_n_type",&this->opPhoton_n_type,"opPhoton_n_type/I");
+    this->GetTree()->Branch("opPhoton_n_type",&this->opPhoton_n_type);
     
     this->GetTree()->Branch("opPhoton_n_ext",&this->opPhoton_n_ext,"opPhoton_n_ext/I");
-    this->GetTree()->Branch("opPhoton_n_ext_type",&this->opPhoton_n_ext_type,"opPhoton_n_ext_type/I");
+    this->GetTree()->Branch("opPhoton_n_ext_type",&this->opPhoton_n_ext_type);
     
     this->GetTree()->Branch("opPhoton_n_det",&this->opPhoton_n_det,"opPhoton_n_det/I");
-    this->GetTree()->Branch("opPhoton_n_det_type",&this->opPhoton_n_det_type,"opPhoton_n_det_type/I");
-    
-//     this->GetTree()->Branch("opPhoton_process",&opPhoton_process);
-//     this->GetTree()->Branch("opPhoton_trackID",&opPhoton_trackID);
-//     this->GetTree()->Branch("opPhoton_parentTrackID",&opPhoton_parentTrackID);
-//     this->GetTree()->Branch("opPhoton_fiberIX",&opPhoton_fiberIX);
-//     this->GetTree()->Branch("opPhoton_fiberIZ",&opPhoton_fiberIZ);
-//     this->GetTree()->Branch("opPhoton_energy",&opPhoton_energy);
-//     this->GetTree()->Branch("opPhoton_waveLength",&opPhoton_waveLength);
-//     this->GetTree()->Branch("opPhoton_time",&opPhoton_time);
-//     this->GetTree()->Branch("opPhoton_vertexX",&opPhoton_vertexX);
-//     this->GetTree()->Branch("opPhoton_vertexY",&opPhoton_vertexY);
-//     this->GetTree()->Branch("opPhoton_vertexZ",&opPhoton_vertexZ);
-//     this->GetTree()->Branch("opPhoton_pX",&opPhoton_pX);
-//     this->GetTree()->Branch("opPhoton_pY",&opPhoton_pY);
-//     this->GetTree()->Branch("opPhoton_pZ",&opPhoton_pZ);
+    this->GetTree()->Branch("opPhoton_n_det_type",&this->opPhoton_n_det_type);
        
     this->GetTree()->Branch("opPhoton_process_det",&opPhoton_process_det);
     this->GetTree()->Branch("opPhoton_waveLength_det",&opPhoton_waveLength_det);
@@ -186,6 +171,7 @@ void CreateTree::Clear()
       
       opPhoton_n_ext = 0;
       opPhoton_n_ext_type.clear();
+      
       opPhoton_n_det = 0;
       opPhoton_n_det_type.clear();
       
