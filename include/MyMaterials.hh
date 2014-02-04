@@ -26,7 +26,7 @@ public:
   static G4Material* LSO();
   static G4Material* LYSO();
   static G4Material* LYSO_lowLY();
-  static G4Material* LuAG_Ce();
+  static G4Material* LuAG_Ce(double mu_ind);
   static G4Material* LuAG_Pr();
   static G4Material* PWO(double mu_ind);
   static G4Material* DSBCe();

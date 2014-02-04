@@ -4,19 +4,18 @@
 /gps/particle opticalphoton
 
 /gps/pos/type Volume
-/gps/pos/shape Para
+/gps/pos/shape Cylinder
 /gps/pos/centre  0 0 0 mm
-/gps/pos/halfx 14 mm
-/gps/pos/halfy 14 mm
+/gps/pos/radius 1 mm
 /gps/pos/halfz 110 mm
 
 /gps/ang/type iso
 /gps/polarization 1 0 0
 
 /gps/ene/type Gauss
-/gps/ene/mono	2.95 eV		# 420 nm
+/gps/ene/mono	2.38 eV		# 520 nm
 /gps/ene/sigma 0.12 eV		# 18 nm
 
 
 #/tracking/verbose 1
-/run/beamOn 1000000
+/run/beamOn 100000

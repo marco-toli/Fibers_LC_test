@@ -17,29 +17,25 @@
 
   // DEFINING FILE AND TREE VARIABLES
 
-  const int nAtt= 11;
+  const int nAtt= 7;
   ofstream out_stream_att ("att_input_parameters_NEW.txt");
   
   TFile * RunFile[nAtt];
   cout << "almeno fin qui ..." << endl;
 
 
-  RunFile[0] = new TFile("data/LC_sim_0mind.root","READ");   //
-  RunFile[1] = new TFile("data/LC_sim_1mind.root","READ");   //
-  RunFile[2] = new TFile("data/LC_sim_2mind.root","READ");   //
-  RunFile[3] = new TFile("data/LC_sim_3mind.root","READ");   //
-  RunFile[4] = new TFile("data/LC_sim_5mind.root","READ");   //
-  
-  RunFile[5] = new TFile("data/LC_sim_7mind.root","READ");   //
-  RunFile[6] = new TFile("data/LC_sim_10mind.root","READ");   //
-  RunFile[7] = new TFile("data/LC_sim_12mind.root","READ");   //
-  RunFile[8] = new TFile("data/LC_sim_15mind.root","READ");   //
-  RunFile[9] = new TFile("data/LC_sim_20mind.root","READ");   //
-  RunFile[10] = new TFile("data/LC_sim_30mind.root","READ");   //
+  RunFile[0] = new TFile("test.root","READ");   //
+  RunFile[1] = new TFile("test2.root","READ");   //
+  RunFile[2] = new TFile("test_alpha0_3.root","READ");   //
+  RunFile[3] = new TFile("test_alpha0_9.root","READ");   //
+  RunFile[4] = new TFile("test_polished_backP.root","READ");   //
+  RunFile[5] = new TFile("test_2mind.root","READ");   //
+  RunFile[6] = new TFile("test_no_grease.root","READ");   //
+
    
   int NBINS = 220;
   double maxZ = 220;
-  double maxX = 14;
+  double maxX = 1;
   
   TGraphErrors * grLO = new TGraphErrors ();
   TGraphErrors * gr_par0 = new TGraphErrors ();
@@ -79,11 +75,11 @@
     hEfficiency[iAtt] = new TH1F (name, name, NBINS, 0, maxZ);
   
     sprintf (name, "hTranverseXEff_%d", iAtt);
-    hTranverseXEff[iAtt] = new TH1F (name, name, NBINS, -maxX, maxX);
+    hTranverseXEff[iAtt] = new TH1F (name, name, NBINS, 0, maxX);
     sprintf (name, "hTranverseXInEff_%d", iAtt);
-    hTranverseXInEff[iAtt] = new TH1F (name, name, NBINS, -maxX, maxX);
+    hTranverseXInEff[iAtt] = new TH1F (name, name, NBINS, 0, maxX);
     sprintf (name, "hEfficiencyX_%d", iAtt);
-    hEfficiencyX [iAtt] = new TH1F (name, name, NBINS, -maxX, maxX);
+    hEfficiencyX [iAtt] = new TH1F (name, name, NBINS, 0, maxX);
     
     sprintf (name, "hPulseShape_%d", iAtt);
     hPulseShape [iAtt] = new TH1F (name, name, 500, -10, 100);
@@ -149,13 +145,15 @@
 // 	cout << " iEvt = " << iEvt << endl; //" :: photons = " << opPhoton_time_det.size() << endl; 	
 	
 	// filling efficiencies
+	double radius = sqrt(pow(InitialPositionX,2) + pow(InitialPositionY,2));
+	
 	hLongitudinalInEff[iAtt]->Fill(InitialPositionZ + 110);
-	hTranverseXInEff[iAtt]->Fill(InitialPositionX);
+	hTranverseXInEff[iAtt]->Fill(radius);
 	  
 	if (opPhoton_n_det == 1) {
 // 	  cout << "det!" << endl;
 	  hLongitudinalEff[iAtt]->Fill(InitialPositionZ + 110);
-	  hTranverseXEff[iAtt]->Fill(InitialPositionX);
+	  hTranverseXEff[iAtt]->Fill(radius);
 	}
 	
 	
@@ -185,7 +183,7 @@
 
     TF1 * fAtt = new TF1 ("fAtt", " [0]*exp((x-220)/[1]) + [2]", 0, 220);    
     fAtt->SetParameters(0.1, 20, 0.01);
-//     fAtt->FixParameter(1,220);
+    fAtt->FixParameter(2,0);
     fAtt->SetLineColor(iAtt+1);
     for (int j=0; j< 10; j++) hEfficiency[iAtt]->Fit("fAtt", "QR");
     gr_par0->SetPoint(iAtt, 1000/hInputAbsorption[iAtt]->GetBinContent(13), fAtt->GetParameter(0));
@@ -196,18 +194,19 @@
     
     TF1 * fFNUF = new TF1 ("fFNUF", " [0]*x + [1]", 35.2, 114.4);    	// fnuf: slope of linear fit between 13 X_0 e 4 X_0 con X_0 PWO = 8.8 mm
     fFNUF->SetParameters(1, 1);
-    hEfficiency[iAtt]->Fit("fFNUF", "QR");
-    gr_FNUF->SetPoint(iAtt, 1000/hInputAbsorption[iAtt]->GetBinContent(13), fFNUF->GetParameter(0)*100/0.0088);	// fnuf tra 13 X_0 e 4 X_0 con X_0 PWO = 8.8 mm
+//     hEfficiency[iAtt]->Fit("fFNUF", "QR");
+//     gr_FNUF->SetPoint(iAtt, 1000/hInputAbsorption[iAtt]->GetBinContent(13), fFNUF->GetParameter(0)*100/0.0088);	// fnuf tra 13 X_0 e 4 X_0 con X_0 PWO = 8.8 mm
     
-    
-    
-    TF1 * fDecayTime = new TF1 ("fDecayTime", " [0]*exp(-x/[1])", 0, 100);
-    fDecayTime->SetParameters(100, 20);
-    fDecayTime->SetLineColor(iAtt+1);
-    for (int j = 0; j< 10; j++) hPulseShape[iAtt]->Fit("fDecayTime", "QR");
     
     hPulseShape[iAtt]->Scale(1./hPulseShape[iAtt]->GetMaximum());
     hPulseShapePMT[iAtt]->Scale(1./hPulseShapePMT[iAtt]->GetMaximum());
+    
+    TF1 * fDecayTime = new TF1 ("fDecayTime", " [0]*exp(-x/[1])", 0, 100);
+    fDecayTime->SetParameters(1, 20);
+    fDecayTime->SetLineColor(iAtt+1);
+    for (int j = 0; j< 10; j++) hPulseShape[iAtt]->Fit("fDecayTime", "QR");
+    
+    
     
     hInputAbsorption[iAtt]->SetLineColor(iAtt+1);
     hPulseShape[iAtt]->SetLineColor(iAtt+1);

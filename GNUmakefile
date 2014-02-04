@@ -1,4 +1,4 @@
-name := ECAL_Endcap_tapered
+name := Fibers_LC_test
 G4TARGET := $(name)
 G4EXLIB := true
 

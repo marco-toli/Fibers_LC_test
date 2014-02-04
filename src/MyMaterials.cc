@@ -410,7 +410,7 @@ G4Material* MyMaterials::DSBCe()  // Nanostructured glass ceramics scintillator 
 
 
 
-G4Material* MyMaterials::LuAG_Ce() // Lutetium Aluminum Garnet - Ce-doped
+G4Material* MyMaterials::LuAG_Ce(double mu_ind) // Lutetium Aluminum Garnet - Ce-doped
 {
   G4double a, z, density;
   G4Element*  O = new G4Element("Oxygen",   "O",  z=8.,  a= 16.00*g/mole);
@@ -547,7 +547,27 @@ G4Material* MyMaterials::LuAG_Ce() // Lutetium Aluminum Garnet - Ce-doped
       0.0177025*m, 0.0411282*m, 0.0919861*m, 0.149875*m, 0.132761*m, 0.068419*m, 0.0246548*m, 0.00922619*m, 0.00902168*m, 0.0264256*m,
       0.0839517*m, 0.0796384*m, 0.0552649*m, 0.0197203*m, 0.00872616*m, 0.00764327*m, 0.0153009*m, 0.0299903*m, 0.0403526*m, 0.0377371*m,
       0.0322887*m, 0.0251734*m, 0.0194992*m, 0.0145645*m, 0.0112908*m, 0.0100775*m, 0.0112081*m, 0.0158907*m, 0.019793*m };
-  
+
+      TF1 * fLambdaMu = new TF1 ("fLambdaMu", "[0]/x/x/x/x + [1]*exp(-pow(x-[2],2)/2/[3]/[3] )");
+      fLambdaMu->SetParameter(0, 3.11093e+10);
+      fLambdaMu->SetParameter(1, 4.33418);
+      fLambdaMu->SetParameter(2, 362.606);
+      fLambdaMu->SetParameter(3, 14.991);
+
+
+      TH1F * hAttenuation = new TH1F ("hAttenuation", "hAttenuation", nEntries_ABS, 1239.84/PhotonEnergy_ABS[nEntries_ABS-1], 1239.84/PhotonEnergy_ABS[0]);
+
+      for (int iAbs = 0; iAbs < nEntries_ABS; iAbs++){
+// 	Absorption[iAbs] = Absorption[iAbs]*10;
+ 	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind/1000*mm);
+
+//   	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind*fLambdaMu->Eval(1239.84/PhotonEnergy_ABS[iAbs]*nm)/1000*mm);
+	hAttenuation->Fill (1239.84/PhotonEnergy_ABS[iAbs] , Absorption[iAbs]);
+// 	cout << " Absorption[" << 1239.84/PhotonEnergy_ABS[iAbs]*nm << "]  = " << Absorption[iAbs] << "correction : " << mu_ind*fLambdaMu->Eval(1239.84/PhotonEnergy_ABS[iAbs]*nm)/1000*mm << endl;
+      }
+
+      hAttenuation->Write();
+      
   // for now, using the LSO scintillation properties
   const G4int nEntries_SCY = 12;
   G4double ElectronEnergy_SCY[nEntries_SCY] =
@@ -568,8 +588,8 @@ G4Material* MyMaterials::LuAG_Ce() // Lutetium Aluminum Garnet - Ce-doped
   myMPT->AddProperty("ABSLENGTH",     PhotonEnergy_ABS,  Absorption,      nEntries_ABS);
   //myMPT->AddProperty("ELECTRONSCINTILLATIONYIELD", ElectronEnergy_SCY, ScintilYield, nEntries_SCY);
   myMPT->AddConstProperty("SCINTILLATIONYIELD",15000/MeV);
-  myMPT->AddConstProperty("RESOLUTIONSCALE",8.5);
-  myMPT->AddConstProperty("FASTTIMECONSTANT",60.*ns);
+  myMPT->AddConstProperty("RESOLUTIONSCALE", 1);	//8.5 by default ?
+  myMPT->AddConstProperty("FASTTIMECONSTANT",55.*ns);
   myMPT->AddConstProperty("YIELDRATIO",1.0);
   myMPT->AddConstProperty("FASTSCINTILLATIONRISETIME",0.5*ns);
   

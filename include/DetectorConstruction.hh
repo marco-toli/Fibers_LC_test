@@ -87,7 +87,8 @@ private:
   G4double crystal_abslength;
   G4double crystal_induced_abslength;
   
-  G4double crystal_length;
+  G4double fiber_length;
+  G4double fiber_radius;
   G4double front_face_size;
   G4double rear_face_size;
   

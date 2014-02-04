@@ -17,7 +17,7 @@ public:
   static G4Material* Vacuum();
   static G4Material* Air();
   static G4Material* Water();
-  static G4Material* Aluminum();
+  static G4Material* Aluminum(); 
   static G4Material* Silicon();
   static G4Material* Brass();
   static G4Material* Tungsten();

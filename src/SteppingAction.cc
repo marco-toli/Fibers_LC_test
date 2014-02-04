@@ -83,7 +83,7 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
       
       // produced photons
       // 	  if (thePostPVName == name2 ) cout << "pre PV name = " << thePrePVName << " :: the post PV = " << thePostPVName  << endl;
-      if (theTrack->GetVolume()->GetName() == "EE_phys" && (nStep == 1)) {// 
+      if (theTrack->GetVolume()->GetName() == "Fiber_phys" && (nStep == 1)) {//
 	CreateTree::Instance()->opPhoton_n ++;
 	if (processName == "Cerenkov") CreateTree::Instance()->opPhoton_n_type.push_back(0);
 	if (processName == "Scintillation") CreateTree::Instance()->opPhoton_n_type.push_back(1);
@@ -91,7 +91,7 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
       }
       
       // extracted photons
-      if (thePrePVName == "EE_phys" && thePostPVName == "Grease_phys" ) {
+      if (thePrePVName == "Fiber_phys" && thePostPVName == "Grease_phys" ) {
 	CreateTree::Instance()->opPhoton_n_ext ++;
 	if (processName == "Cherenkov") CreateTree::Instance()->opPhoton_n_ext_type.push_back(0);
 	if (processName == "Scintillation") CreateTree::Instance()->opPhoton_n_ext_type.push_back(1);
@@ -130,7 +130,7 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
     float ion_energy = theStep->GetTotalEnergyDeposit()/GeV - theStep->GetNonIonizingEnergyDeposit()/GeV;
     float nonion_energy = theStep->GetNonIonizingEnergyDeposit()/GeV;
     
-    if( delta > 0  && thePrePVLogName == "EE_log")
+    if( delta > 0  && thePrePVLogName == "Fiber_log")
     {	   
 
       G4ThreeVector pos = thePostPoint -> GetPosition();
