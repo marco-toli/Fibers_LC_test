@@ -106,6 +106,8 @@ private:
   G4double det_distance;
   G4int    det_material;
   
+  G4int coupling;
+  
   G4double depth;
   
   void readConfigFile(string configFileName);
@@ -117,6 +119,7 @@ private:
   G4Material* ScMaterial;
   G4Material* WiMaterial;
   G4Material* DeMaterial;
+  G4Material* CouplingMaterial;
 
 
   // Surfaces

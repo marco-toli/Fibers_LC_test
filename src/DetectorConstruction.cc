@@ -127,21 +127,21 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4Tubs* Det_layer_solid = new G4Tubs("Det_layer_solid", 0, fiber_radius+2*mm, depth*0.5, startAngle, spanningAngle);
   G4Tubs* Det_solid = new G4Tubs("Det_solid", 0, fiber_radius+2*mm, det_d*0.5, startAngle, spanningAngle);
   
-  G4Box* Front_al = new G4Box("Front_al", 0.5*front_face_size, 0.5*front_face_size, 0.5*win_l);
+  G4Tubs* Front_al = new G4Tubs("Front_al", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
   
   // logical
   G4LogicalVolume* Fiber_log = new G4LogicalVolume(Fiber_solid, ScMaterial, "Fiber_log", 0, 0, 0);
 //   G4LogicalVolume* Fiber_log_alveolar = new G4LogicalVolume(Fiber_solid_alveolar, MyMaterials::Aluminum(), "Fiber_log_alveolar", 0, 0, 0);
   G4LogicalVolume* Fiber_log_alveolar = new G4LogicalVolume(Fiber_solid_alveolar, MyMaterials::Air(), "Fiber_log_alveolar", 0, 0, 0);
   
-//   G4LogicalVolume* Grease_log = new G4LogicalVolume(Grease_solid, MyMaterials::OpticalGrease(), "Grease_log", 0, 0, 0);
-  G4LogicalVolume* Grease_log = new G4LogicalVolume(Grease_solid, MyMaterials::Air(), "Grease_log", 0, 0, 0);
+  G4LogicalVolume* Grease_log = new G4LogicalVolume(Grease_solid, CouplingMaterial, "Grease_log", 0, 0, 0);
+//   G4LogicalVolume* Grease_log = new G4LogicalVolume(Grease_solid, MyMaterials::Air(), "Grease_log", 0, 0, 0);
   G4LogicalVolume* Win_log = new G4LogicalVolume(Win_solid, WiMaterial, "Win_log", 0, 0, 0);
   
   G4LogicalVolume* Det_layer_log = new G4LogicalVolume(Det_layer_solid, DeMaterial, "Det_layer_log", 0, 0, 0);
   G4LogicalVolume* Det_log = new G4LogicalVolume(Det_solid, DeMaterial, "Det_log", 0, 0, 0);
   
-  G4LogicalVolume* Front_al_log = new G4LogicalVolume(Front_al, MyMaterials::Aluminum(), "Front_log", 0, 0, 0);
+  G4LogicalVolume* Front_al_log = new G4LogicalVolume(Front_al, MyMaterials::Air(), "Front_log", 0, 0, 0);
 
   
   // physical: placement
@@ -155,7 +155,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
       G4VPhysicalVolume* Det_layer_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + depth)/2 + 2*win_l) , Det_layer_log, "Det_layer_phys", expHall_log, false, 0);
       G4VPhysicalVolume* Det_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length  + det_d)/2 + 2*win_l + depth) , Det_log, "Det_phys", expHall_log, false, 0);
       
-//       G4VPhysicalVolume* Front_al_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, -(fiber_length + win_l)/2) , Front_al_log, "Front_al_phys", expHall_log, false, 0);
+      G4VPhysicalVolume* Front_al_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, -(fiber_length + win_l)/2) , Front_al_log, "Front_al_phys", expHall_log, false, 0);
     
 
     //
@@ -180,7 +180,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         //----INTERNAL WRAPPING----//
 	    	    
 	    CrystalSurfaceSkin   = new G4LogicalBorderSurface("Lateral", Fiber_phys, Fiber_alveolar_phys, OpCrystalSurface);
-//     	    CrystalFrontSkin   = new G4LogicalBorderSurface("Front", EE_phys, Front_al_phys, OpCrystalSurface);
+     	    CrystalFrontSkin   = new G4LogicalBorderSurface("Front", Fiber_phys, Front_al_phys, OpCrystalSurface);
 
     }
     
@@ -284,6 +284,7 @@ void DetectorConstruction::readConfigFile(string configFileName)
   config.readInto(win_r,"win_r");
   config.readInto(win_l,"win_l");
   config.readInto(win_material,"win_material");
+  config.readInto(coupling,"coupling");
   
   config.readInto(det_d,"det_d");
   config.readInto(det_distance,"det_distance");
@@ -338,6 +339,17 @@ void DetectorConstruction::initializeMaterials()
     exit(-1);
   }
   G4cout << "Window material: " << win_material << G4endl;
+  
+  
+  CouplingMaterial = NULL;
+  if( coupling == 0 ) CouplingMaterial = MyMaterials::Air();
+  else if( coupling == 1 ) CouplingMaterial = MyMaterials::OpticalGrease();
+  else
+  {
+    G4cerr << "<DetectorConstructioninitializeMaterials>: Invalid coupling material specifier " << coupling << G4endl;
+    exit(-1);
+  }
+  G4cout << "Coupling material: " << coupling << G4endl;
   
   
   DeMaterial = NULL;
