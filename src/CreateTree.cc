@@ -28,13 +28,6 @@ CreateTree::CreateTree(TString name, bool energy_fiber, bool init_data, bool pos
   this->GetTree()->Branch("Tot_phot_cer",		   &this->Tot_phot_cer,			 "Tot_phot_cer/F");
   this->GetTree()->Branch("Tot_phot_scint",		   &this->Tot_phot_scint,			 "Tot_phot_scint/F");
   
-//   this->GetTree()->Branch("Total_delta_world",        &this->Total_delta_world,        "Total_delta_world/F");
-//   this->GetTree()->Branch("Total_energy_world",       &this->Total_energy_world,       "Total_energy_world/F");
-//   this->GetTree()->Branch("Total_ion_energy_world",   &this->Total_ion_energy_world,   "Total_ion_energy_world/F");
-//   this->GetTree()->Branch("Total_nonion_energy_world",&this->Total_nonion_energy_world,"Total_nonion_energy_world/F");
-  
-//   this->GetTree()->Branch("Total_em_energy",&this->Total_em_energy,"Total_em_energy/F");
-  
   if( this -> INIT_DATA )
   {
     this->GetTree()->Branch("InitialEnergy",&this->InitialEnergy,"InitialEnergy/F");
