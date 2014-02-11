@@ -42,6 +42,11 @@ public:
   bool Timing()       const { return this -> TIMING;       };
   
   int Event;
+  float Fiber_length;
+  float Fiber_radius;
+  float Coupling;
+  float SurfaceType;
+  float DetDistance;
   
   float InitialEnergy;
   
@@ -58,9 +63,6 @@ public:
   std::vector<float> depositionZ;
   std::vector<float> Energy_deposited;
   std::vector<float> Time_deposit;
-
-  float Tot_phot_cer;
-  float Tot_phot_scint;
   
   float Total_delta_world;
   float Total_energy_world;
@@ -70,7 +72,7 @@ public:
   
   float Total_energy;
   float Total_ion_energy;
-  float Total_ion_energy_att[10];
+  float Total_ion_energy_att[11];
   
   
   std::vector<int> opPhoton_process;
@@ -96,10 +98,6 @@ public:
   std::vector<float> opPhoton_n_ext_type;
   std::vector<float> opPhoton_n_det_type;
 
-  int opPhoton_n_det_central;
-  int opPhoton_n_det_3x3;
-  int opPhoton_n_det_5x5;
-  
   std::vector<int> opPhoton_process_det;
   std::vector<int> opPhoton_trackID_det;
   std::vector<int> opPhoton_parentTrackID_det;

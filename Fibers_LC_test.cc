@@ -167,8 +167,19 @@ int main(int argc,char** argv)
   G4bool timing      = 1;
   
   CreateTree* mytree = new CreateTree("tree", energy_data, init_data, pos_fiber, opPhotons, timing);
+
+  G4long Fiber_length 	= config.read<long int>("fiber_length");
+  G4long Fiber_radius 	= config.read<long int>("fiber_radius");
+  G4long Coupling 	= config.read<long int>("coupling");
+  G4long SurfaceType 	= config.read<long int>("crystalSurfinish");
+  G4long DetDistance 	= config.read<long int>("det_distance");
   
-  
+	CreateTree::Instance() -> Fiber_length = Fiber_length;
+	CreateTree::Instance() -> Fiber_radius = Fiber_radius;
+	CreateTree::Instance() -> Coupling = Coupling;
+	CreateTree::Instance() -> SurfaceType = SurfaceType;
+	CreateTree::Instance() -> DetDistance = DetDistance;
+	
   // User Verbose output class
   //
   G4VSteppingVerbose* verbosity = new SteppingVerbose;

@@ -25,8 +25,11 @@ CreateTree::CreateTree(TString name, bool energy_fiber, bool init_data, bool pos
   
   this->GetTree()->Branch("Event",&this->Event,"Event/I");
   
-  this->GetTree()->Branch("Tot_phot_cer",		   &this->Tot_phot_cer,			 "Tot_phot_cer/F");
-  this->GetTree()->Branch("Tot_phot_scint",		   &this->Tot_phot_scint,			 "Tot_phot_scint/F");
+  this->GetTree()->Branch("Fiber_radius",		   &this->Fiber_radius,			 "Fiber_radius/F");
+  this->GetTree()->Branch("Fiber_length",		   &this->Fiber_length,			 "Fiber_length/F");
+  this->GetTree()->Branch("Coupling",			   &this->Coupling,			 "Coupling/F");
+  this->GetTree()->Branch("SurfaceType",		   &this->SurfaceType,			 "SurfaceType/F");
+  this->GetTree()->Branch("DetDistance",		   &this->DetDistance,			 "DetDistance/F");
   
   if( this -> INIT_DATA )
   {
@@ -101,10 +104,6 @@ void CreateTree::Clear()
 {
   Event	= 0;
   
-  Tot_phot_cer = 0;
-  Tot_phot_scint = 0;
-  
-  Total_delta_world         = 0;
   Total_energy_world        = 0;
   Total_ion_energy_world    = 0;
   Total_nonion_energy_world = 0;

@@ -68,18 +68,9 @@ DetectorConstruction::DetectorConstruction(const string& configFileName)
   
   expHall_x = expHall_y = expHall_z = 10*m;
   
-//   fiber_length = 220*mm;
-//   front_face_size = 28.62*mm;
-//   rear_face_size = 30.00*mm;
-
-//   matrix_pos = 6015 + fiber_length/2;
-  hodo_1 = 5;
-  hodo_2 = 2525;
-  
   startAngle = 0.*deg;
   spanningAngle = 360.*deg;
     
-  
 }
 
 
