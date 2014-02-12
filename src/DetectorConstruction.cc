@@ -110,7 +110,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 //   G4Tubs* Fiber_solid_big = new G4Tubs("Fiber_solid_big",0 , fiber_radius + 0.1*mm, 0.5*fiber_length, 0, 360);
 //   G4SubtractionSolid* Fiber_solid_alveolar = new G4SubtractionSolid ("Fiber_solid_alveolar", Fiber_solid_big, Fiber_solid);
-   G4Tubs* Fiber_solid_alveolar = new G4Tubs ("Fiber_solid_alveolar", fiber_radius, fiber_radius + 0.1 *mm, 0.5*fiber_length, 0, 360);
+  G4Tubs* Fiber_solid_alveolar = new G4Tubs ("Fiber_solid_alveolar", fiber_radius, fiber_radius + 0.1 *mm, 0.5*fiber_length, 0, 360);
   
   G4Tubs* Grease_solid = new G4Tubs("Grease_solid", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
   G4Tubs* Win_solid = new G4Tubs("Win_solid", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
@@ -140,11 +140,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
       G4VPhysicalVolume* Fiber_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), Fiber_log, "Fiber_phys", expHall_log, false, 0);
       G4VPhysicalVolume* Fiber_alveolar_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), Fiber_log_alveolar, "Fiber_alveolar_phys", expHall_log, false, 0);
 
-      G4VPhysicalVolume* Grease_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + win_l)/2) , Grease_log, "Grease_phys", expHall_log, false, 0);
-      G4VPhysicalVolume* Win_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + win_l)/2 + win_l), Win_log, "Win_phys", expHall_log, false, 0);
+      G4VPhysicalVolume* Grease_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + win_l)/2 + det_distance) , Grease_log, "Grease_phys", expHall_log, false, 0);
+      G4VPhysicalVolume* Win_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + win_l)/2 + win_l + det_distance), Win_log, "Win_phys", expHall_log, false, 0);
 
-      G4VPhysicalVolume* Det_layer_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + depth)/2 + 2*win_l) , Det_layer_log, "Det_layer_phys", expHall_log, false, 0);
-      G4VPhysicalVolume* Det_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length  + det_d)/2 + 2*win_l + depth) , Det_log, "Det_phys", expHall_log, false, 0);
+      G4VPhysicalVolume* Det_layer_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + depth)/2 + 2*win_l + det_distance) , Det_layer_log, "Det_layer_phys", expHall_log, false, 0);
+      G4VPhysicalVolume* Det_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length  + det_d)/2 + 2*win_l + depth + det_distance) , Det_log, "Det_phys", expHall_log, false, 0);
       
       G4VPhysicalVolume* Front_al_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, -(fiber_length + win_l)/2) , Front_al_log, "Front_al_phys", expHall_log, false, 0);
     
@@ -334,7 +334,7 @@ void DetectorConstruction::initializeMaterials()
   
   CouplingMaterial = NULL;
   if( coupling == 0 ) CouplingMaterial = MyMaterials::Air();
-  else if( coupling == 1 ) CouplingMaterial = MyMaterials::OpticalGrease();
+//   else if( coupling == 1 ) CouplingMaterial = MyMaterials::OpticalGrease();
   else
   {
     G4cerr << "<DetectorConstructioninitializeMaterials>: Invalid coupling material specifier " << coupling << G4endl;
