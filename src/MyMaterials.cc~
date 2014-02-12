@@ -558,7 +558,7 @@ G4Material* MyMaterials::LuAG_Ce(double mu_ind) // Lutetium Aluminum Garnet - Ce
       TH1F * hAttenuation = new TH1F ("hAttenuation", "hAttenuation", nEntries_ABS, 1239.84/PhotonEnergy_ABS[nEntries_ABS-1], 1239.84/PhotonEnergy_ABS[0]);
 
       for (int iAbs = 0; iAbs < nEntries_ABS; iAbs++){
-// 	Absorption[iAbs] = Absorption[iAbs]*10;
+	Absorption[iAbs] = Absorption[iAbs]*10;
  	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind/1000*mm);
 
 //   	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind*fLambdaMu->Eval(1239.84/PhotonEnergy_ABS[iAbs]*nm)/1000*mm);
@@ -587,11 +587,11 @@ G4Material* MyMaterials::LuAG_Ce(double mu_ind) // Lutetium Aluminum Garnet - Ce
   //myMPT->AddProperty("RAYLEIGH",      PhotonEnergy_RI,   Rayleigh,        nEntries_RI);
   myMPT->AddProperty("ABSLENGTH",     PhotonEnergy_ABS,  Absorption,      nEntries_ABS);
   //myMPT->AddProperty("ELECTRONSCINTILLATIONYIELD", ElectronEnergy_SCY, ScintilYield, nEntries_SCY);
-  myMPT->AddConstProperty("SCINTILLATIONYIELD",15000/MeV);
+  myMPT->AddConstProperty("SCINTILLATIONYIELD", 15000/MeV);
   myMPT->AddConstProperty("RESOLUTIONSCALE", 1);	//8.5 by default ?
-  myMPT->AddConstProperty("FASTTIMECONSTANT",55.*ns);
-  myMPT->AddConstProperty("YIELDRATIO",1.0);
-  myMPT->AddConstProperty("FASTSCINTILLATIONRISETIME",0.5*ns);
+  myMPT->AddConstProperty("FASTTIMECONSTANT", 55.*ns);
+  myMPT->AddConstProperty("YIELDRATIO", 1.0);
+  myMPT->AddConstProperty("FASTSCINTILLATIONRISETIME", 0.5*ns);
   
   mat->SetMaterialPropertiesTable(myMPT);
   

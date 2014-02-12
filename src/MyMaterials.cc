@@ -525,7 +525,7 @@ G4Material* MyMaterials::LuAG_Ce(double mu_ind) // Lutetium Aluminum Garnet - Ce
     { 1.842, 1.842, 1.842 };
   //G4double Rayleigh[nEntries_RI] =
   //  { 138.*mm, 138.*mm, 138.*mm };
-  
+   
   const G4int nEntries_ABS = 89;
   G4double PhotonEnergy_ABS[nEntries_ABS] =
     { 1.78417*eV, 1.7971*eV, 1.81022*eV, 1.82353*eV, 1.83704*eV, 1.85075*eV, 1.86466*eV, 1.87879*eV, 1.89313*eV, 1.90769*eV,
@@ -558,7 +558,7 @@ G4Material* MyMaterials::LuAG_Ce(double mu_ind) // Lutetium Aluminum Garnet - Ce
       TH1F * hAttenuation = new TH1F ("hAttenuation", "hAttenuation", nEntries_ABS, 1239.84/PhotonEnergy_ABS[nEntries_ABS-1], 1239.84/PhotonEnergy_ABS[0]);
 
       for (int iAbs = 0; iAbs < nEntries_ABS; iAbs++){
-// 	Absorption[iAbs] = Absorption[iAbs]*10;
+	Absorption[iAbs] = Absorption[iAbs]*10;
  	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind/1000*mm);
 
 //   	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind*fLambdaMu->Eval(1239.84/PhotonEnergy_ABS[iAbs]*nm)/1000*mm);

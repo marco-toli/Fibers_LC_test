@@ -74,5 +74,5 @@ void TrackingAction::PostUserTrackingAction(const G4Track* aTrack)
   {
      CreateTree::Instance()->Total_em_energy += aTrackInfo->GetParticleEnergy()/GeV;
   }*/
-  std::cout << " storing track info ... " << std::endl;
+//   std::cout << " storing track info ... " << std::endl;
 }

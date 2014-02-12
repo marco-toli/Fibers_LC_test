@@ -8,7 +8,7 @@
 // * LICENSE and available at http://cern.ch/geant4/license . These *
 // * include a list of copyright holders. *
 // * *
-// * Neither the authors of this software system, nor their employing *
+// * Neither the authors of this software system, nor their employing * 
 // * institutes,nor the agencies providing financial support for this *
 // * work make any representation or warranty, express or implied, *
 // * regarding this software system or assume any liability for its *
@@ -25,7 +25,7 @@
 //
 /// \file hadronic/Hadr01/src/G4EmUserPhysics.cc
 /// \brief Implementation of the G4EmUserPhysics class
-//
+// 
 // $Id$
 //
 //---------------------------------------------------------------------------

@@ -7,7 +7,7 @@ using std::string;
 using namespace std;
 
 ConfigFile::ConfigFile( string filename, string delimiter,
-                        string comment, string vectSep, string sentry ) 
+                        string comment, string vectSep, string sentry )
 	: myDelimiter(delimiter), myComment(comment), myVectorSep(vectSep), mySentry(sentry)
 {
 	// Construct a ConfigFile, getting keys and values from given file

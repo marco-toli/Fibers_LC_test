@@ -29,6 +29,7 @@ CreateTree::CreateTree(TString name, bool energy_fiber, bool init_data, bool pos
   this->GetTree()->Branch("Fiber_length",		   &this->Fiber_length,			 "Fiber_length/F");
   this->GetTree()->Branch("Coupling",			   &this->Coupling,			 "Coupling/F");
   this->GetTree()->Branch("SurfaceType",		   &this->SurfaceType,			 "SurfaceType/F");
+  this->GetTree()->Branch("DetDistance",		   &this->DetDistance,			 "DetDistance/F");
   
   if( this -> INIT_DATA )
   {
