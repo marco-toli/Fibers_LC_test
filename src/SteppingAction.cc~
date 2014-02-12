@@ -136,7 +136,7 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
       G4ThreeVector pos = thePostPoint -> GetPosition();
       CreateTree::Instance()->Total_energy      += energy;
       CreateTree::Instance()->Total_ion_energy    += ion_energy;
-      
+       
      // define parameter for effective attenuation curve along z (crystal length)
      
      

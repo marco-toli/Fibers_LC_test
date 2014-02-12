@@ -22,7 +22,7 @@
 // * use  in  resulting  scientific  publications,  and indicate your *
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
-//
+// 
 //
 // $Id: PrimaryGeneratorAction.cc,v 1.6 2006-06-29 17:54:27 gunter Exp $
 // GEANT4 tag $Name: not supported by cvs2svn $
@@ -49,7 +49,7 @@
 PrimaryGeneratorAction::PrimaryGeneratorAction(const G4ThreeVector& posCentre)
 {
   G4GeneralParticleSource* gps = new G4GeneralParticleSource();
-  
+   
   //gps->GetCurrentSource()->GetEneDist()->SetMonoEnergy(0.511*MeV);
   //gps->GetCurrentSource()->GetAngDist()->SetParticleMomentumDirection(G4ThreeVector(0.,-1.,0.));
 //   gps->GetCurrentSource()->GetPosDist()->SetCentreCoords(posCentre);
