@@ -559,9 +559,9 @@ G4Material* MyMaterials::LuAG_Ce(double mu_ind) // Lutetium Aluminum Garnet - Ce
 
       for (int iAbs = 0; iAbs < nEntries_ABS; iAbs++){
 // 	Absorption[iAbs] = Absorption[iAbs]*10;
-// 	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind/1000*mm);
+ 	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind/1000*mm);
 
-  	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind*fLambdaMu->Eval(1239.84/PhotonEnergy_ABS[iAbs]*nm)/1000*mm);
+//   	Absorption[iAbs] = 1./(1/Absorption[iAbs] + mu_ind*fLambdaMu->Eval(1239.84/PhotonEnergy_ABS[iAbs]*nm)/1000*mm);
 	hAttenuation->Fill (1239.84/PhotonEnergy_ABS[iAbs] , Absorption[iAbs]);
 // 	cout << " Absorption[" << 1239.84/PhotonEnergy_ABS[iAbs]*nm << "]  = " << Absorption[iAbs] << "correction : " << mu_ind*fLambdaMu->Eval(1239.84/PhotonEnergy_ABS[iAbs]*nm)/1000*mm << endl;
       }
