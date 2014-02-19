@@ -111,14 +111,24 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //   G4Tubs* Fiber_solid_big = new G4Tubs("Fiber_solid_big",0 , fiber_radius + 0.1*mm, 0.5*fiber_length, 0, 360);
 //   G4SubtractionSolid* Fiber_solid_alveolar = new G4SubtractionSolid ("Fiber_solid_alveolar", Fiber_solid_big, Fiber_solid);
   G4Tubs* Fiber_solid_alveolar = new G4Tubs ("Fiber_solid_alveolar", fiber_radius, fiber_radius + 0.1 *mm, 0.5*fiber_length, 0, 360);
+
+  // cylindrical SiPM
+//   G4Tubs* Grease_solid = new G4Tubs("Grease_solid", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
+//   G4Tubs* Win_solid = new G4Tubs("Win_solid", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
+//  
+//   G4Tubs* Det_layer_solid = new G4Tubs("Det_layer_solid", 0, fiber_radius+2*mm, depth*0.5, startAngle, spanningAngle);
+//   G4Tubs* Det_solid = new G4Tubs("Det_solid", 0, fiber_radius+2*mm, det_d*0.5, startAngle, spanningAngle);
+//   
+//   G4Tubs* Front_al = new G4Tubs("Front_al", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
   
-  G4Tubs* Grease_solid = new G4Tubs("Grease_solid", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
-  G4Tubs* Win_solid = new G4Tubs("Win_solid", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
- 
-  G4Tubs* Det_layer_solid = new G4Tubs("Det_layer_solid", 0, fiber_radius+2*mm, depth*0.5, startAngle, spanningAngle);
-  G4Tubs* Det_solid = new G4Tubs("Det_solid", 0, fiber_radius+2*mm, det_d*0.5, startAngle, spanningAngle);
-  
-  G4Tubs* Front_al = new G4Tubs("Front_al", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
+  // square SiPM
+  G4Box* Grease_solid = new G4Box("Grease_solid", det_d*0.5, det_d*0.5, 0.5*win_l);
+  G4Box* Win_solid = new G4Box("Win_solid", det_d*0.5, det_d*0.5, 0.5*win_l);
+
+  G4Box* Det_layer_solid = new G4Box("Det_layer_solid", det_d*0.5, det_d*0.5, depth*0.5);
+  G4Box* Det_solid = new G4Box("Det_solid", det_d*0.5, det_d*0.5, det_d*0.5);
+
+  G4Box* Front_al = new G4Box("Front_al", det_d*0.5, det_d*0.5, 0.5*win_l);
   
   // logical
   G4LogicalVolume* Fiber_log = new G4LogicalVolume(Fiber_solid, ScMaterial, "Fiber_log", 0, 0, 0);
