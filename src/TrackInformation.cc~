@@ -5,7 +5,7 @@
 G4Allocator<TrackInformation> aTrackInformationAllocator;
 
 TrackInformation::TrackInformation()
-{
+{ 
   particleDefinition = 0;
   particleName = "";
   particleTrackID = 0;

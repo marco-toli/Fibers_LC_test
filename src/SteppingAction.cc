@@ -27,6 +27,9 @@
 #include "TTree.h"
 #include "TString.h"
 #include "TF1.h"
+#include "G4SystemOfUnits.hh"
+#include "G4PhysicalConstants.hh"
+#include "globals.hh"
 
 
 SteppingAction::SteppingAction()
@@ -137,14 +140,6 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
       CreateTree::Instance()->Total_energy      += energy;
       CreateTree::Instance()->Total_ion_energy    += ion_energy;
        
-     // define parameter for effective attenuation curve along z (crystal length)
-     
-     
-//      cout << " att coeff = " <<  fAtt(par0, par1, par2, pos[2])/par0 << endl;
-     for (int iAtt = 0; iAtt < nATT; iAtt++) {
-	 CreateTree::Instance()->Total_ion_energy_att[iAtt]    += ion_energy* fAtt(par0[iAtt], par1[iAtt], par2[iAtt], pos[2] + 110);// if normalization / fAtt(par0[iAtt], par1[iAtt], par2[iAtt], 220);
-     }
-     
 
       
       if( CreateTree::Instance()->Pos_fiber() )

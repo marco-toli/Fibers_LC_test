@@ -104,7 +104,8 @@ void G4EmUserPhysics::ConstructProcess()
   G4EmSaturation* emSaturation = G4LossTableManager::Instance()->EmSaturation();
   theScintillationProcess->AddSaturation(emSaturation);
 
-  theParticleIterator->reset();
+  G4ParticleTable::G4PTblDicIterator* theParticleIterator = G4ParticleTable::GetParticleTable() -> GetIterator();
+  theParticleIterator -> reset();
   while( (*theParticleIterator)() )
   {
     G4ParticleDefinition* particle = theParticleIterator->value();

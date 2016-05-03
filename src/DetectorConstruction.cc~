@@ -31,6 +31,33 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #include "DetectorConstruction.hh"
+#include "G4MagneticField.hh"
+#include "G4UniformMagField.hh"
+#include "G4FieldManager.hh"
+#include "G4TransportationManager.hh"
+#include "G4MagIntegratorStepper.hh"
+#include "G4Mag_UsualEqRhs.hh"
+#include "G4ClassicalRK4.hh"
+#include "G4ExplicitEuler.hh"
+#include "G4ChordFinder.hh"
+#include "G4EqMagElectricField.hh"
+#include "G4PropagatorInField.hh"
+#include "G4Material.hh"
+#include "G4Box.hh"
+#include "G4Trd.hh"
+#include "G4Tubs.hh"
+#include "G4LogicalVolume.hh"
+#include "G4PVPlacement.hh"
+#include "G4PVReplica.hh"
+#include "G4SubtractionSolid.hh"
+#include "G4GeometryTolerance.hh"
+#include "G4GeometryManager.hh"
+#include "G4NistManager.hh"
+#include "G4VisAttributes.hh"
+#include "G4Colour.hh"
+#include "G4SDManager.hh"
+
+#include "G4UserLimits.hh"
 
 #include "G4Material.hh"
 #include "MyMaterials.hh"
@@ -48,6 +75,48 @@
 #include "G4VisAttributes.hh"
 #include "math.h"
 #include <cmath>
+#include "globals.hh"
+
+#include "DetectorConstruction.hh"
+#include "G4MagneticField.hh"
+#include "G4UniformMagField.hh"
+#include "G4FieldManager.hh"
+#include "G4TransportationManager.hh"
+#include "G4MagIntegratorStepper.hh"
+#include "G4Mag_UsualEqRhs.hh"
+#include "G4ClassicalRK4.hh"
+#include "G4ExplicitEuler.hh"
+#include "G4ChordFinder.hh"
+#include "G4EqMagElectricField.hh"
+#include "G4PropagatorInField.hh"
+#include "G4Material.hh"
+#include "G4Box.hh"
+#include "G4Trd.hh"
+#include "G4Tubs.hh"
+#include "G4LogicalVolume.hh"
+#include "G4PVPlacement.hh"
+#include "G4PVReplica.hh"
+#include "G4SubtractionSolid.hh"
+#include "G4GeometryTolerance.hh"
+#include "G4GeometryManager.hh"
+#include "G4NistManager.hh"
+#include "G4VisAttributes.hh"
+#include "G4Colour.hh"
+#include "G4SDManager.hh"
+
+#include "G4UserLimits.hh"
+
+
+#include "DetectorConstruction.hh"
+#include <G4TransportationManager.hh>
+#include <G4MagneticField.hh>
+#include <G4UniformMagField.hh>
+#include <G4FieldManager.hh>
+#include "CreateTree.hh"
+#include <algorithm>
+#include <string>
+#include <sstream>
+#include "TRandom3.h"
 
 
 
@@ -111,14 +180,24 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //   G4Tubs* Fiber_solid_big = new G4Tubs("Fiber_solid_big",0 , fiber_radius + 0.1*mm, 0.5*fiber_length, 0, 360);
 //   G4SubtractionSolid* Fiber_solid_alveolar = new G4SubtractionSolid ("Fiber_solid_alveolar", Fiber_solid_big, Fiber_solid);
   G4Tubs* Fiber_solid_alveolar = new G4Tubs ("Fiber_solid_alveolar", fiber_radius, fiber_radius + 0.1 *mm, 0.5*fiber_length, 0, 360);
+
+  // cylindrical SiPM
+//   G4Tubs* Grease_solid = new G4Tubs("Grease_solid", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
+//   G4Tubs* Win_solid = new G4Tubs("Win_solid", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
+//  
+//   G4Tubs* Det_layer_solid = new G4Tubs("Det_layer_solid", 0, fiber_radius+2*mm, depth*0.5, startAngle, spanningAngle);
+//   G4Tubs* Det_solid = new G4Tubs("Det_solid", 0, fiber_radius+2*mm, det_d*0.5, startAngle, spanningAngle);
+//   
+//   G4Tubs* Front_al = new G4Tubs("Front_al", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
   
-  G4Tubs* Grease_solid = new G4Tubs("Grease_solid", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
-  G4Tubs* Win_solid = new G4Tubs("Win_solid", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
- 
-  G4Tubs* Det_layer_solid = new G4Tubs("Det_layer_solid", 0, fiber_radius+2*mm, depth*0.5, startAngle, spanningAngle);
-  G4Tubs* Det_solid = new G4Tubs("Det_solid", 0, fiber_radius+2*mm, det_d*0.5, startAngle, spanningAngle);
-  
-  G4Tubs* Front_al = new G4Tubs("Front_al", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
+  // square SiPM
+  G4Box* Grease_solid = new G4Box("Grease_solid", det_d*0.5, det_d*0.5, 0.5*win_l);
+  G4Box* Win_solid = new G4Box("Win_solid", det_d*0.5, det_d*0.5, 0.5*win_l);
+
+  G4Box* Det_layer_solid = new G4Box("Det_layer_solid", det_d*0.5, det_d*0.5, depth*0.5);
+  G4Box* Det_solid = new G4Box("Det_solid", det_d*0.5, det_d*0.5, det_d*0.5);
+
+  G4Box* Front_al = new G4Box("Front_al", det_d*0.5, det_d*0.5, 0.5*win_l);
   
   // logical
   G4LogicalVolume* Fiber_log = new G4LogicalVolume(Fiber_solid, ScMaterial, "Fiber_log", 0, 0, 0);

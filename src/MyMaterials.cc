@@ -2,7 +2,9 @@
 #include "G4NistManager.hh"
 #include "TF1.h"
 #include "TH1F.h"
-
+#include "G4SystemOfUnits.hh"
+#include "G4PhysicalConstants.hh"
+#include "globals.hh"
 
 
 MyMaterials::MyMaterials()
@@ -1199,3 +1201,4 @@ G4double MyMaterials::fromNmToEv (G4double wavelength)
 {
   return 1239.84187 / wavelength;
 }
+

@@ -1,6 +1,8 @@
 #include "TrackInformation.hh"
 
-
+#include "G4SystemOfUnits.hh"
+#include "G4PhysicalConstants.hh"
+#include "globals.hh"
 
 G4Allocator<TrackInformation> aTrackInformationAllocator;
 
