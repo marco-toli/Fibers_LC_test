@@ -18,7 +18,7 @@
 
 
   const int nATT = 11;
-  double par0[nATT], par1[nATT], par2[nATT];
+//  double par0[nATT], par1[nATT], par2[nATT];
 
   //class SteppingMessenger;
   
@@ -32,13 +32,13 @@ public:
   
 
   
-
+/*
   double fAtt (double par0, double par1, double par2, double z) {
     
     double att = par0*exp((z-220)/par1) + par2;
     return att;
     
-  }
+  }*/
   
      
   //void SetOneStepPrimaries(G4bool b){oneStepPrimaries=b;}
