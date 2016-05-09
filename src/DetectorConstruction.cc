@@ -247,7 +247,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   
   G4VisAttributes* VisAttCrystal = new G4VisAttributes(green);
   VisAttCrystal->SetVisibility(true);
-  VisAttCrystal->SetForceWireframe(true);
+  VisAttCrystal->SetForceWireframe(false);
   Fiber_log->SetVisAttributes(VisAttCrystal);
   
   G4VisAttributes* VisAttWindow = new G4VisAttributes(blue);
