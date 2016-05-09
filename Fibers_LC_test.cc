@@ -58,7 +58,6 @@
 #include "G4EmStandardPhysics.hh"
 #include "G4VModularPhysicsList.hh"
 
-#include "LHEP.hh"
 #include "QGSP_BERT.hh"
 
 #include "PrimaryGeneratorAction.hh"
@@ -79,6 +78,7 @@
 #endif
 
 
+using namespace CLHEP;
 
 long int CreateSeed();
 
@@ -86,7 +86,7 @@ long int CreateSeed();
 
 int main(int argc,char** argv)
 {
-  gInterpreter -> GenerateDictionary("vector<float>","vector");
+//  gInterpreter -> GenerateDictionary("vector<float>","vector");
   
   
   if (argc != 4 && argc != 3)
@@ -122,8 +122,7 @@ int main(int argc,char** argv)
   cout<<"\n"<<endl;
   cout<<"######################################################"<<endl;  
   cout<<"#                                                    #"<<endl;
-  cout<<"#  GEANT4 simulation of sampling calorimeter         #"<<endl;  
-  cout<<"#         based on LuAG crystal fibers.              #"<<endl;  
+  cout<<"#  GEANT4 simulation of crystal fibers               #"<<endl;  
   cout<<"#  Author: Marco Lucchini, CERN, 2013                #"<<endl;
   cout<<"#                                                    #"<<endl;  
   cout<<"######################################################"<<endl;
@@ -144,8 +143,6 @@ int main(int argc,char** argv)
   /// initialize attenuation function parameters
   
   
-  ifstream fp_Att_func("att_input_parameters.txt");
-  for (int iAtt = 0; iAtt < nATT; iAtt++) fp_Att_func >> par0[iAtt] >> par1[iAtt] >> par2[iAtt];
   
   
   // Seed the random number generator manually
@@ -273,7 +270,7 @@ int main(int argc,char** argv)
     G4UIExecutive * ui = new G4UIExecutive(argc,argv);
     #ifdef G4VIS_USE
     
-    UImanager -> ApplyCommand(executeGPS);
+//    UImanager -> ApplyCommand(executeGPS);
     UImanager -> ApplyCommand("/control/execute vis.mac");     
     #endif
     ui -> SessionStart();
@@ -288,7 +285,6 @@ int main(int argc,char** argv)
   {
     runManager -> Initialize();
     G4UImanager* UImanager = G4UImanager::GetUIpointer(); 
-    
 //     UImanager -> ApplyCommand("/control/execute gps.mac");
     UImanager -> ApplyCommand(executeGPS);
   } 
@@ -304,7 +300,6 @@ int main(int argc,char** argv)
   if(argc == 4) 
   {
     G4cout << "Writing tree to file " << filename << " ..." << G4endl;
-    
     mytree -> GetTree() -> Write();
     outfile -> Close();
   }
@@ -317,34 +312,32 @@ int main(int argc,char** argv)
 long int CreateSeed()
 {
   TRandom3 rangen;
-  long int s = time(0);
-  cout<<"Time : "<<s<<endl;
-  s+=getpid();
-  cout<<"PID  : "<<getpid()<<endl;
   
-  FILE * fp = fopen ("/proc/uptime", "r");
-  int uptime,upsecs;
-  if (fp != NULL)
+  long int sec = time(0);
+  G4cout << "Time : " << sec << G4endl;
+  
+  sec += getpid();
+  G4cout << "PID  : " << getpid() << G4endl;
+  
+  FILE* fp = fopen ("/proc/uptime", "r");
+  int upsecs = 0;
+  if( fp != NULL )
   {
     char buf[BUFSIZ];
-    int res;
-    char *b = fgets (buf, BUFSIZ, fp);
-    if (b == buf)
+    char *b = fgets(buf,BUFSIZ,fp);
+    if( b == buf )
     {
       /* The following sscanf must use the C locale.  */
-      setlocale (LC_NUMERIC, "C");
-      res = sscanf (buf, "%i", &upsecs);
-      setlocale (LC_NUMERIC, "");
-      if (res == 1) uptime = (time_t) upsecs;
+      setlocale(LC_NUMERIC, "C");
+      setlocale(LC_NUMERIC, "");
     }
-    fclose (fp);
+    fclose(fp);
   }
+  G4cout << "Upsecs: " << upsecs << G4endl;
+  sec += upsecs;
   
-  cout<<"Uptime: "<<upsecs<<endl;
-  s+=upsecs;
-  
-  cout<<"Seed for srand: "<<s<<endl;
-  srand(s);
+  G4cout << "Seed for srand: " << sec << G4endl;
+  srand(sec);
   rangen.SetSeed(rand());
   long int seed = round(1000000*rangen.Uniform());
   return seed;
