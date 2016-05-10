@@ -7,6 +7,9 @@
 #include "globals.hh"
 
 
+using namespace CLHEP;
+
+
 MyMaterials::MyMaterials()
 {}
 

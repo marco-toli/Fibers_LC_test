@@ -1,6 +1,6 @@
 #include "CreateTree.hh"
 
-
+using namespace std ;
 
 CreateTree* CreateTree::fInstance = NULL;
 

@@ -2,7 +2,9 @@
 #include "G4NistManager.hh"
 #include "TF1.h"
 #include "TH1F.h"
-
+#include "G4SystemOfUnits.hh"
+#include "G4PhysicalConstants.hh"
+#include "globals.hh"
 
 
 MyMaterials::MyMaterials()

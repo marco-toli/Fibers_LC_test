@@ -33,7 +33,7 @@ CreateTree::CreateTree(TString name, bool energy_fiber, bool init_data, bool pos
   
   if( this -> INIT_DATA )
   {
-    this->GetTree()->Branch("InitialEnergy",&this->InitialEnergy,"InitialEnergy/F");
+    this->GetTree()->Branch("InitialEnergy",&this->InitialEnergy,"InitialEnergy/F"); 
     
     this->GetTree()->Branch("InitialPositionX",&this->InitialPositionX,"InitialPositionX/F");
     this->GetTree()->Branch("InitialPositionY",&this->InitialPositionY,"InitialPositionY/F");
