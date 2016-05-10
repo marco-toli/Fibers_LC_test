@@ -1,4 +1,4 @@
-set(CMAKE_CXX_COMPILER "/afs/cern.ch/sw/lcg/external/gcc/4.9.3/x86_64-slc6-gcc49-opt/bin/g++")
+set(CMAKE_CXX_COMPILER "/afs/cern.ch/sw/lcg/contrib/gcc/4.9/x86_64-slc6/bin/g++")
 set(CMAKE_CXX_COMPILER_ARG1 "")
 set(CMAKE_CXX_COMPILER_ID "GNU")
 set(CMAKE_CXX_COMPILER_VERSION "4.9.3")

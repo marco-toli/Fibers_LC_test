@@ -25,7 +25,7 @@ CMAKE_BUILD_TYPE:STRING=
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
 //CXX compiler.
-CMAKE_CXX_COMPILER:FILEPATH=/afs/cern.ch/sw/lcg/external/gcc/4.9.3/x86_64-slc6-gcc49-opt/bin/g++
+CMAKE_CXX_COMPILER:FILEPATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.9/x86_64-slc6/bin/g++
 
 //Flags used by the compiler during all build types.
 CMAKE_CXX_FLAGS:STRING=
@@ -45,7 +45,7 @@ CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
 //C compiler.
-CMAKE_C_COMPILER:FILEPATH=/afs/cern.ch/sw/lcg/external/gcc/4.9.3/x86_64-slc6-gcc49-opt/bin/gcc
+CMAKE_C_COMPILER:FILEPATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.9/x86_64-slc6/bin/gcc
 
 //Flags used by the compiler during all build types.
 CMAKE_C_FLAGS:STRING=
@@ -177,7 +177,7 @@ Fibers_LC_test__BINARY_DIR:STATIC=/afs/cern.ch/work/m/mlucchin/Fibers_LC_test/bu
 Fibers_LC_test__SOURCE_DIR:STATIC=/afs/cern.ch/work/m/mlucchin/Fibers_LC_test
 
 //The directory containing a CMake configuration file for Geant4.
-Geant4_DIR:PATH=/afs/cern.ch/sw/lcg/external/geant4/10.1/x86_64-slc6-gcc49-opt/lib64/Geant4-10.1.0
+Geant4_DIR:PATH=/afs/cern.ch/sw/lcg/external/geant4/10.1.p02/x86_64-slc6-gcc49-opt-MT/lib64/Geant4-10.1.2
 
 //Build example with Geant4 UI and Vis drivers
 WITH_GEANT4_UIVIS:BOOL=ON

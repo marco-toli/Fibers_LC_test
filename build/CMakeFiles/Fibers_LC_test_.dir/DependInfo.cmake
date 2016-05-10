@@ -7,6 +7,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
 SET(CMAKE_TARGET_DEFINITIONS
   "G4INTY_USE_QT"
   "G4INTY_USE_XT"
+  "G4MULTITHREADED"
   "G4UI_USE"
   "G4UI_USE_QT"
   "G4UI_USE_TCSH"
@@ -27,13 +28,13 @@ SET(CMAKE_TARGET_LINKED_INFO_FILES
 
 # The include file search paths:
 SET(CMAKE_C_TARGET_INCLUDE_PATH
-  "/afs/cern.ch/sw/lcg/external/geant4/10.1/x86_64-slc6-gcc49-opt/include/Geant4"
+  "/afs/cern.ch/sw/lcg/external/geant4/10.1.p02/x86_64-slc6-gcc49-opt-MT/include/Geant4"
   "/afs/cern.ch/sw/lcg/external/clhep/2.2.0.4/x86_64-slc6-gcc49-opt/include"
   "/afs/cern.ch/sw/lcg/external/XercesC/3.1.1p2/x86_64-slc6-gcc47-opt/include"
-  "/afs/cern.ch/sw/lcg/external/qt/4.8.4/x86_64-slc6-gcc47-opt/include"
-  "/afs/cern.ch/sw/lcg/external/qt/4.8.4/x86_64-slc6-gcc47-opt/include/QtCore"
-  "/afs/cern.ch/sw/lcg/external/qt/4.8.4/x86_64-slc6-gcc47-opt/include/QtGui"
-  "/afs/cern.ch/sw/lcg/external/qt/4.8.4/x86_64-slc6-gcc47-opt/include/QtOpenGL"
+  "/afs/.cern.ch/sw/lcg/experimental/qt/4.8.4/x86_64-slc6-gcc48-opt/include"
+  "/afs/.cern.ch/sw/lcg/experimental/qt/4.8.4/x86_64-slc6-gcc48-opt/include/QtCore"
+  "/afs/.cern.ch/sw/lcg/experimental/qt/4.8.4/x86_64-slc6-gcc48-opt/include/QtGui"
+  "/afs/.cern.ch/sw/lcg/experimental/qt/4.8.4/x86_64-slc6-gcc48-opt/include/QtOpenGL"
   "../include"
   )
 SET(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})

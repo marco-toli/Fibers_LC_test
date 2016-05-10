@@ -28,7 +28,7 @@ extern void G__cpp_setup_funcdict();
 extern void G__set_cpp_environmentdict();
 }
 
- 
+
 #include "TObject.h"
 #include "TMemberInspector.h"
 #include "/afs/cern.ch/work/m/mlucchin/Fibers_LC_test/include/STLDict.hh"
