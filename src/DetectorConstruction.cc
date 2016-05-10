@@ -80,7 +80,7 @@
 #include "globals.hh"
 
 
-
+using namespace CLHEP;
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -154,8 +154,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //   G4Tubs* Front_al = new G4Tubs("Front_al", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
   
   // square SiPM
-  G4Box* Grease_solid = new G4Box("Grease_solid", det_d*0.5, det_d*0.5, 0.5*win_l);
-  G4Box* Win_solid = new G4Box("Win_solid", det_d*0.5, det_d*0.5, 0.5*win_l);
+  double thin_layer = 0.01*mm;
+
+  G4Box* Grease_solid_layer = new G4Box("Grease_solid_layer", det_d*0.6, det_d*0.6, 0.5*thin_layer);
+  G4Box* Grease_solid 	    = new G4Box("Grease_solid", det_d*0.5, det_d*0.5, 0.5*(win_l-thin_layer));
+
+  G4Box* Win_solid_layer = new G4Box("Win_solid_layer", det_d*0.6, det_d*0.6, 0.5*thin_layer);
+  G4Box* Win_solid = new G4Box("Win_solid", det_d*0.5, det_d*0.5, 0.5*(win_l-thin_layer));
 
   G4Box* Det_layer_solid = new G4Box("Det_layer_solid", det_d*0.5, det_d*0.5, depth*0.5);
   G4Box* Det_solid = new G4Box("Det_solid", det_d*0.5, det_d*0.5, det_d*0.5);
@@ -166,9 +171,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4LogicalVolume* Fiber_log = new G4LogicalVolume(Fiber_solid, ScMaterial, "Fiber_log", 0, 0, 0);
 //   G4LogicalVolume* Fiber_log_alveolar = new G4LogicalVolume(Fiber_solid_alveolar, MyMaterials::Aluminum(), "Fiber_log_alveolar", 0, 0, 0);
   G4LogicalVolume* Fiber_log_alveolar = new G4LogicalVolume(Fiber_solid_alveolar, MyMaterials::Air(), "Fiber_log_alveolar", 0, 0, 0);
-  
-  G4LogicalVolume* Grease_log = new G4LogicalVolume(Grease_solid, CouplingMaterial, "Grease_log", 0, 0, 0);
-//   G4LogicalVolume* Grease_log = new G4LogicalVolume(Grease_solid, MyMaterials::Air(), "Grease_log", 0, 0, 0);
+
+  G4LogicalVolume* Grease_log_layer = new G4LogicalVolume(Grease_solid_layer, CouplingMaterial, "Grease_log", 0, 0, 0);  
+  G4LogicalVolume* Grease_log 	    = new G4LogicalVolume(Grease_solid, CouplingMaterial, "Grease_log", 0, 0, 0);
+
+  G4LogicalVolume* Win_log_layer = new G4LogicalVolume(Win_solid_layer, WiMaterial, "Win_log_layer", 0, 0, 0);
   G4LogicalVolume* Win_log = new G4LogicalVolume(Win_solid, WiMaterial, "Win_log", 0, 0, 0);
   
   G4LogicalVolume* Det_layer_log = new G4LogicalVolume(Det_layer_solid, DeMaterial, "Det_layer_log", 0, 0, 0);
@@ -182,11 +189,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
       G4VPhysicalVolume* Fiber_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), Fiber_log, "Fiber_phys", expHall_log, false, 0);
       G4VPhysicalVolume* Fiber_alveolar_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), Fiber_log_alveolar, "Fiber_alveolar_phys", expHall_log, false, 0);
 
-      G4VPhysicalVolume* Grease_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + win_l)/2 + det_distance) , Grease_log, "Grease_phys", expHall_log, false, 0);
-      G4VPhysicalVolume* Win_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + win_l)/2 + win_l + det_distance), Win_log, "Win_phys", expHall_log, false, 0);
+      G4VPhysicalVolume* Grease_rear_phys_layer = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + thin_layer)/2 + det_distance) , Grease_log_layer,  "Grease_phys_layer", expHall_log, false, 0);
+      G4VPhysicalVolume* Grease_rear_phys       = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + win_l + thin_layer)/2 + det_distance) , Grease_log, "Grease_phys", expHall_log, false, 0);
 
-      G4VPhysicalVolume* Det_layer_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + depth)/2 + 2*win_l + det_distance) , Det_layer_log, "Det_layer_phys", expHall_log, false, 0);
-      G4VPhysicalVolume* Det_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length  + det_d)/2 + 2*win_l + depth + det_distance) , Det_log, "Det_phys", expHall_log, false, 0);
+      G4VPhysicalVolume* Win_rear_phys_layer = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length +thin_layer)/2 + win_l + det_distance), Win_log_layer, "Win_phys_layer", expHall_log, false, 0);
+      G4VPhysicalVolume* Win_rear_phys       = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + win_l+thin_layer)/2 + win_l + det_distance), Win_log, "Win_phys", expHall_log, false, 0);
+
+      G4VPhysicalVolume* Det_layer_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length + depth)/2 + 2*win_l + det_distance), Det_layer_log, "Det_layer_phys", expHall_log, false, 0);
+      G4VPhysicalVolume* Det_rear_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, (fiber_length  + det_d)/2 + 2*win_l + depth + det_distance), Det_log, "Det_phys", expHall_log, false, 0);
       
       G4VPhysicalVolume* Front_al_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, -(fiber_length + win_l)/2) , Front_al_log, "Front_al_phys", expHall_log, false, 0);
     
@@ -254,6 +264,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   VisAttWindow->SetVisibility(true);
   VisAttWindow->SetForceWireframe(true);
   Win_log->SetVisAttributes(VisAttWindow);
+  Win_log_layer->SetVisAttributes(VisAttWindow);
+  Grease_log->SetVisAttributes(VisAttWindow);
+  Grease_log_layer->SetVisAttributes(VisAttWindow);
+
   
   G4VisAttributes* VisAttDetLayer = new G4VisAttributes(red);
   VisAttDetLayer->SetVisibility(true);
