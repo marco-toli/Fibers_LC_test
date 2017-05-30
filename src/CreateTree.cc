@@ -42,13 +42,20 @@ CreateTree::CreateTree(TString name, bool energy_fiber, bool init_data, bool pos
     this->GetTree()->Branch("InitalMomentumDirectionX",&this->InitalMomentumDirectionX,"InitalMomentumDirectionX/F");
     this->GetTree()->Branch("InitalMomentumDirectionY",&this->InitalMomentumDirectionY,"InitalMomentumDirectionY/F");
     this->GetTree()->Branch("InitalMomentumDirectionZ",&this->InitalMomentumDirectionZ,"InitalMomentumDirectionZ/F");
+
+    this->GetTree()->Branch("Total_energy_world",&this->Total_energy_world,"Total_energy_world/F");
+    this->GetTree()->Branch("Total_ion_energy_world",&this->Total_ion_energy_world,"Total_ion_energy_world/F");	 
   }
     
   if( this -> ENERGY_FIBER)
   {
-    this->GetTree()->Branch("Total_energy",&this->Total_energy,"Total_energy/F");
-    this->GetTree()->Branch("Total_ion_energy",&this->Total_ion_energy,"Total_ion_energy/F");	  
-    this->GetTree()->Branch("Total_ion_energy_att",&this->Total_ion_energy_att,"Total_ion_energy_att[11]/F");	  
+    //this->GetTree()->Branch("Total_ion_energy_att",&this->Total_ion_energy_att,"Total_ion_energy_att[11]/F");	  
+
+    this->GetTree()->Branch("Total_energy_fib",&this->Total_energy_fib,"Total_energy_fib/F");
+    this->GetTree()->Branch("Total_ion_energy_fib",&this->Total_ion_energy_fib,"Total_ion_energy_fib/F");	  
+
+    this->GetTree()->Branch("Total_energy_abs",&this->Total_energy_abs,"Total_energy_abs/F");
+    this->GetTree()->Branch("Total_ion_energy_abs",&this->Total_ion_energy_abs,"Total_ion_energy_abs/F");	  
   }
   
   if( this -> POS_FIBER)
@@ -106,7 +113,7 @@ void CreateTree::Clear()
   
   Total_energy_world        = 0;
   Total_ion_energy_world    = 0;
-  Total_nonion_energy_world = 0;
+
   
   if( this->INIT_DATA )
   {
@@ -124,10 +131,12 @@ void CreateTree::Clear()
   if( this->ENERGY_FIBER )
   {
     
-        Total_energy= 0;
-        Total_ion_energy = 0;	  		    	  
-	for (int j = 0; j< 10; j++) Total_ion_energy_att[j] = 0;
-    
+        Total_energy_fib     = 0;
+        Total_ion_energy_fib = 0;	  		    	  
+        Total_energy_abs     = 0;
+        Total_ion_energy_abs = 0;	  		    	  
+
+	for (int j = 0; j< 10; j++) Total_ion_energy_att[j] = 0; 
   }
   
   if( this->POS_FIBER )
