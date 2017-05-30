@@ -98,7 +98,7 @@ DetectorConstruction::DetectorConstruction(const string& configFileName)
   
   initializeMaterials();
   
-  expHall_x = expHall_y = expHall_z = 10*m;
+  expHall_x = expHall_y = expHall_z = 1*m;
   
   startAngle = 0.*deg;
   spanningAngle = 360.*deg;
@@ -123,7 +123,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   // initialize surfaces
     G4LogicalBorderSurface *CrystalSurfaceSkin   	= NULL;
-    G4LogicalBorderSurface *CrystalFrontSkin   	= NULL;
+    G4LogicalBorderSurface *CrystalFrontSkin   		= NULL;
     G4OpticalSurface *OpCrystalSurface       		= NULL;
     
   //------------------------------------
@@ -152,6 +152,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //   G4Tubs* Det_solid = new G4Tubs("Det_solid", 0, fiber_radius+2*mm, det_d*0.5, startAngle, spanningAngle);
 //   
 //   G4Tubs* Front_al = new G4Tubs("Front_al", 0, fiber_radius+2*mm, 0.5*win_l, startAngle, spanningAngle);
+
+  double abs_thickness = 17*cm;
+  double abs_distance  = 2*cm;
+
+  G4Box* 		Absorber_S = new G4Box 		 ("Absorber_S", abs_thickness*0.5, abs_thickness*0.5, 0.2*m);
+  G4LogicalVolume* 	Absorber_L = new G4LogicalVolume (Absorber_S, AbMaterial, "Absorber_L", 0, 0, 0);
+  G4VPhysicalVolume*    Absorber_P = new G4PVPlacement(0, G4ThreeVector(0., -(abs_thickness*0.5 + abs_distance), 0), Absorber_L, "Absorber_P", expHall_log, false, 0);
   
   // square SiPM
   double thin_layer = 0.01*mm;
@@ -245,7 +252,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4Colour  brass   (0.8, 0.6, 0.4) ;  // brass
   G4Colour  brown   (0.7, 0.4, 0.1) ;  // brass
   
-  G4VisAttributes* VisAttWorld = new G4VisAttributes(white);
+  G4VisAttributes* VisAttWorld = new G4VisAttributes(blue);
   VisAttWorld->SetVisibility(true);
   VisAttWorld->SetForceWireframe(true);
   expHall_log->SetVisAttributes(VisAttWorld);
@@ -279,7 +286,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   VisAttDetector->SetForceWireframe(false);
   Det_log->SetVisAttributes(VisAttDetector);
 
-  G4VisAttributes* VisAttAlveolar = new G4VisAttributes(yellow);
+  G4VisAttributes* VisAttAlveolar = new G4VisAttributes(cyan);
   VisAttAlveolar->SetVisibility(true);
   VisAttAlveolar->SetForceWireframe(true);
   Fiber_log_alveolar->SetVisAttributes(VisAttAlveolar);
@@ -351,8 +358,11 @@ void DetectorConstruction::initializeMaterials()
   // define materials
   
   AbMaterial = NULL;
-  if( abs_material == 1 ) AbMaterial = MyMaterials::Brass();
+  if     ( abs_material == 1 ) AbMaterial = MyMaterials::Brass();
   else if( abs_material == 2 ) AbMaterial = MyMaterials::Tungsten();
+  else if( abs_material == 3 ) AbMaterial = MyMaterials::Lead();
+  else if( abs_material == 4 ) AbMaterial = MyMaterials::Iron();
+  else if( abs_material == 5 ) AbMaterial = MyMaterials::CopperTungstenAlloy();
   else
   {
     G4cerr << "<DetectorConstructioninitializeMaterials>: Invalid absorber material specifier " << abs_material << G4endl;
