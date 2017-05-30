@@ -132,22 +132,33 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
     G4String thePrePVLogName = thePrePVLog -> GetName();
     
     
-    float delta = thePrePoint->GetTotalEnergy()/GeV - thePostPoint->GetTotalEnergy()/GeV;
-    float energy = theStep->GetTotalEnergyDeposit()/GeV;
+    float delta = thePrePoint->GetTotalEnergy()/MeV - thePostPoint->GetTotalEnergy()/MeV;
+    float energy = theStep->GetTotalEnergyDeposit()/MeV;
     float time_dep =  theTrack->GetGlobalTime()/nanosecond ;
     
-    float ion_energy = theStep->GetTotalEnergyDeposit()/GeV - theStep->GetNonIonizingEnergyDeposit()/GeV;
+    float ion_energy = theStep->GetTotalEnergyDeposit()/MeV - theStep->GetNonIonizingEnergyDeposit()/MeV;
     
-    if( delta > 0  && thePrePVLogName == "Fiber_log")
+  
+    if( delta > 0)
     {	   
 
-      G4ThreeVector pos = thePostPoint -> GetPosition();
-      CreateTree::Instance()->Total_energy        += energy;
-      CreateTree::Instance()->Total_ion_energy    += ion_energy;      
+      CreateTree::Instance()->Total_energy_world        += energy;
+      CreateTree::Instance()->Total_ion_energy_world    += ion_energy;      
+
+      if (thePrePVLogName == "Fiber_log") 
+      {
+         CreateTree::Instance()->Total_energy_fib        += energy;
+         CreateTree::Instance()->Total_ion_energy_fib    += ion_energy;      
+      }
+      else if (thePrePVLogName == "Absorber_L") 
+      {
+         CreateTree::Instance()->Total_energy_abs        += energy;
+         CreateTree::Instance()->Total_ion_energy_abs    += ion_energy;      
+      }
       
       if( CreateTree::Instance()->Pos_fiber() )
       {
-        	
+        G4ThreeVector pos = thePostPoint -> GetPosition();        	
         CreateTree::Instance() -> depositionX.push_back(pos[0]);		
         CreateTree::Instance() -> depositionY.push_back(pos[1]);
         CreateTree::Instance() -> depositionZ.push_back(pos[2]);
@@ -155,7 +166,7 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
 	CreateTree::Instance() -> Time_deposit.push_back(time_dep);
 // 	cout << " depositing ... ("  << pos[0] << "," << pos[1] << "," << pos[2] << ") :: energy = " << energy << endl;
       }
-    }  //inside crystal
+    }
   } // non optical photon
   
 }
