@@ -49,7 +49,8 @@
 
 #include "TString.h"
 #include "TRandom3.h"
-#include "TCint.h"
+#include "TTree.h"
+//#include "TCint.h"
 
 #include "G4RunManager.hh"
 #include "G4UImanager.hh"
@@ -160,16 +161,16 @@ int main(int argc,char** argv)
   G4bool energy_data = 1;
   G4bool init_data   = 1;
   G4bool pos_fiber   = 0;
-  G4bool opPhotons   = 1;
-  G4bool timing      = 1;
+  G4bool opPhotons   = 0;
+  G4bool timing      = 0;
   
   CreateTree* mytree = new CreateTree("tree", energy_data, init_data, pos_fiber, opPhotons, timing);
 
-  G4long Fiber_length 	= config.read<long int>("fiber_length");
-  G4long Fiber_radius 	= config.read<long int>("fiber_radius");
+  G4long Fiber_length 	= config.read<float>("fiber_length");
+  G4long Fiber_radius 	= config.read<float>("fiber_radius");
   G4long Coupling 	= config.read<long int>("coupling");
   G4long SurfaceType 	= config.read<long int>("crystalSurfinish");
-  G4long DetDistance 	= config.read<long int>("det_distance");
+  G4long DetDistance 	= config.read<float>("det_distance");
   
 	CreateTree::Instance() -> Fiber_length = Fiber_length;
 	CreateTree::Instance() -> Fiber_radius = Fiber_radius;
