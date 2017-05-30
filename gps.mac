@@ -2,22 +2,22 @@
 # initialization of G4GeneralParticleSource
 
 
+
 /gps/energy 50 GeV
 /gps/particle e-
 
 /gps/pos/type Plane
 /gps/pos/shape Square
-/gps/pos/centre  0 0 -0.2 m
-/gps/pos/halfx 0.2 cm
-/gps/pos/halfy 0.2 cm
-
-#/gps/ang/type beam2d
-#/gps/ang/focuspoint 0. 0. -0.2 m
-#/gps/ang/sigma_x 0.5 mrad
-#/gps/ang/sigma_y 0.5 mrad
+/gps/direction 0. 1. 0.
+/gps/pos/rot1 1 0 0
+/gps/pos/rot2 0 0 1
+/gps/pos/halfx 1. cm
+/gps/pos/halfy 1. cm
+/gps/pos/halfz 1. cm
 
 
-/gps/direction 0. 0. 1.
+/gps/pos/centre 0 -0.5 0 m	# start beam close to crystal to have 0 time close to 0
+
 
 #/tracking/verbose 1
-/run/beamOn 1
+/run/beamOn 100
