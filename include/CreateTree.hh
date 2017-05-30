@@ -64,14 +64,15 @@ public:
   std::vector<float> Energy_deposited;
   std::vector<float> Time_deposit;
   
-  float Total_delta_world;
+
   float Total_energy_world;
   float Total_ion_energy_world;
-  float Total_nonion_energy_world;
   
-  
-  float Total_energy;
-  float Total_ion_energy;
+  float Total_energy_fib;
+  float Total_ion_energy_fib;
+  float Total_energy_abs;
+  float Total_ion_energy_abs;
+
   float Total_ion_energy_att[11];
   
   
