@@ -47,7 +47,7 @@
 #
 # To invert the above, drawing all particles except gammas,
 # keep the above two lines but also add:
-#/vis/filtering/trajectories/particleFilter-0/invert true
+/vis/filtering/trajectories/particleFilter-0/invert true
 #
 # Many other options are available with /vis/modeling and /vis/filtering.
 # For example, to select colour by particle ID:
@@ -72,6 +72,21 @@
 
 
 
+/gps/energy 50 GeV
+/gps/particle geantino
+
+/gps/pos/type Plane
+/gps/pos/shape Square
+/gps/direction 0. 1. 0.
+/gps/pos/rot1 1 0 0
+/gps/pos/rot2 0 0 1
+/gps/pos/halfx 1. cm
+/gps/pos/halfy 1. cm
+/gps/pos/halfz 1. cm
+
+
+/gps/pos/centre 0 -0.5 0 m	# start beam close to crystal to have 0 time close to 0
+
 
 #/tracking/verbose 1
-#/run/beamOn 1
+/run/beamOn 20
