@@ -20,6 +20,9 @@ public:
   static G4Material* Aluminum(); 
   static G4Material* Silicon();
   static G4Material* Brass();
+  static G4Material* Lead();
+  static G4Material* Iron();
+  static G4Material* CopperTungstenAlloy();
   static G4Material* Tungsten();
   static G4Material* Quartz();
   static G4Material* OpticalGrease();
