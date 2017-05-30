@@ -296,8 +296,6 @@ G4Material* MyMaterials::SiO2Ce()
   return mat;
 }
 
-
-
 G4Material* MyMaterials::Brass()
 {
   G4double a, z, density;
@@ -313,18 +311,67 @@ G4Material* MyMaterials::Brass()
 }
 
 
+
+
+
+G4Material* MyMaterials::Iron()
+{
+  G4NistManager* man = G4NistManager::Instance();
+  G4Element* Fe = man->FindOrBuildElement("Fe");
+  
+  G4Material* mat = new G4Material("Iron",7.874*g/cm3,1);
+  mat->AddElement(Fe,100.*perCent);
+  
+  return mat;
+}
+
+
+
+G4Material* MyMaterials::Lead()
+{
+  G4NistManager* man = G4NistManager::Instance();
+  G4Element* Pb = man->FindOrBuildElement("Pb");
+  
+  G4Material* mat = new G4Material("Lead",11.342*g/cm3,1);
+  mat->AddElement(Pb,100.*perCent);
+  
+  return mat;
+}
+
+
+
 G4Material* MyMaterials::Tungsten()
 {
-  //   G4Element* Cu = new G4Element("Copper", "Cu", z=29., a=63.546*g/mole);
   G4NistManager* man = G4NistManager::Instance();
   G4Element* W = man->FindOrBuildElement("W");
   G4Element* Ni = man->FindOrBuildElement("Ni");
   G4Element* Cu = man->FindOrBuildElement("Cu");
-
-  G4Material* mat = new G4Material("Tungsten", 17.*g/cm3,3);
+  
+  G4Material* mat = new G4Material("Tungsten",17.*g/cm3,3);
   mat->AddElement(W,90.*perCent);
   mat->AddElement(Ni,5.*perCent);
   mat->AddElement(Cu,5.*perCent);
+  
+  return mat;
+}
+
+
+
+//G4Material* MyMaterials::CopperTungstenAlloy(const G4double& WFrac)
+G4Material* MyMaterials::CopperTungstenAlloy()
+{
+  G4NistManager* man = G4NistManager::Instance();
+  G4Element* W = man->FindOrBuildElement("W");
+  G4Element* Cu = man->FindOrBuildElement("Cu");
+  
+  G4double rho_Cu = 8.96;
+  G4double rho_W = 19.25;
+  double WFrac = 0.75;
+  G4double rho = (1.-WFrac)*rho_Cu + WFrac*rho_W;
+  G4Material* mat = new G4Material("CopperTungstenAlloy",rho*g/cm3,2);
+  mat->AddElement(Cu,1.-WFrac);
+  mat->AddElement(W,WFrac);
+  
   return mat;
 }
 
